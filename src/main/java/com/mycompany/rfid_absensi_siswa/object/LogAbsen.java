@@ -8,45 +8,85 @@ import java.time.LocalDateTime;
 
 /**
  *
- * @author ASUS
+ * @author titosukamenabung
  */
 public class LogAbsen {
-    private String idLog;
-    private String sidRfid;
-    private LocalDateTime waktuTap;
-    private String Status;
 
-    public String getIdLog() {
-        return idLog;
+    private String nis;
+    private String namaLengkap;
+    private String kelas;
+    private String tanggal;
+    private String waktu;
+    private String status;
+    private String uidRfid;
+
+    public LogAbsen(String nis, String namaLengkap, String kelas, String tanggal, String waktu, String status, String uidRfid) {
+        this.nis = nis;
+        this.namaLengkap = namaLengkap;
+        this.kelas = kelas;
+        this.tanggal = tanggal;
+        this.waktu = waktu;
+        this.status = status;
+        this.uidRfid = uidRfid;
     }
 
-    public void setIdLog(String idLog) {
-        this.idLog = idLog;
+    public LogAbsen() {
     }
 
-    public String getSidRfid() {
-        return sidRfid;
+    public String getNis() {
+        return nis;
     }
 
-    public void setSidRfid(String sidRfid) {
-        this.sidRfid = sidRfid;
+    public void setNis(String nis) {
+        this.nis = nis;
     }
 
-    public LocalDateTime getWaktuTap() {
-        return waktuTap;
+    public String getNamaLengkap() {
+        return namaLengkap;
     }
 
-    public void setWaktuTap(LocalDateTime waktuTap) {
-        this.waktuTap = waktuTap;
+    public void setNamaLengkap(String namaLengkap) {
+        this.namaLengkap = namaLengkap;
+    }
+
+    public String getKelas() {
+        return kelas;
+    }
+
+    public void setKelas(String kelas) {
+        this.kelas = kelas;
+    }
+
+    public String getTanggal() {
+        return tanggal;
+    }
+
+    public void setTanggal(String tanggal) {
+        this.tanggal = tanggal;
+    }
+
+    public String getWaktu() {
+        return waktu;
+    }
+
+    public void setWaktu(String waktu) {
+        this.waktu = waktu;
     }
 
     public String getStatus() {
-        return Status;
+        return status;
     }
 
-    public void setStatus(String Status) {
-        this.Status = Status;
+    public void setStatus(String status) {
+        this.status = status;
     }
-    
-    
+
+    public String getUidRfid() {
+        return uidRfid;
+    }
+
+    public void setUidRfid(String uidRfid) {
+        this.uidRfid = uidRfid;
+    }
+
 }

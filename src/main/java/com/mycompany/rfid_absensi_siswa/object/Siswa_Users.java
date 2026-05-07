@@ -7,28 +7,47 @@ package com.mycompany.rfid_absensi_siswa.object;
 
 /**
  *
- * @author ASUS
+ * @author titosukamenabung
  */
 public class Siswa_Users {
-    private String sidRfid;
-    private String idSiswa;
+    private String uidRfid;
+    private String nis;
     private String namaLengkap;
-    private String kelasSiswa;
-
-    public String getSidRfid() {
-        return sidRfid;
+    private String kelas;
+    
+    public Siswa_Users() {
     }
 
-    public void setSidRfid(String sidRfid) {
-        this.sidRfid = sidRfid;
+    public Siswa_Users(String uidRfid, String nis, String namaLengkap, String kelas) {
+        this.uidRfid = uidRfid;
+        this.nis = nis;
+        this.namaLengkap = namaLengkap;
+        this.kelas = kelas;
+    }
+    
+    @Override
+    public String toString() {
+        return "Siswa_Users{" + 
+                "uidRfid=" + uidRfid + 
+                ", nis=" + nis + 
+                ", namaLengkap=" + namaLengkap + 
+                ", kelas=" + kelas + '}';
     }
 
-    public String getIdSiswa() {
-        return idSiswa;
+    public String getUidRfid() {
+        return uidRfid;
     }
 
-    public void setIdSiswa(String idSiswa) {
-        this.idSiswa = idSiswa;
+    public void setUidRfid(String uidRfid) {
+        this.uidRfid = uidRfid;
+    }
+
+    public String getNis() {
+        return nis;
+    }
+
+    public void setNis(String nis) {
+        this.nis = nis;
     }
 
     public String getNamaLengkap() {
@@ -39,13 +58,12 @@ public class Siswa_Users {
         this.namaLengkap = namaLengkap;
     }
 
-    public String getKelasSiswa() {
-        return kelasSiswa;
+    public String getKelas() {
+        return kelas;
     }
 
-    public void setKelasSiswa(String kelasSiswa) {
-        this.kelasSiswa = kelasSiswa;
+    public void setKelas(String kelas) {
+        this.kelas = kelas;
     }
-    
-    
+        
 }
