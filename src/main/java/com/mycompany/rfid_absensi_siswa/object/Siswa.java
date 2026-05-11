@@ -9,16 +9,16 @@ package com.mycompany.rfid_absensi_siswa.object;
  *
  * @author titosukamenabung
  */
-public class Siswa_Users {
+public class Siswa {
     private String uidRfid;
     private String nis;
     private String namaLengkap;
     private String kelas;
     
-    public Siswa_Users() {
+    public Siswa() {
     }
 
-    public Siswa_Users(String uidRfid, String nis, String namaLengkap, String kelas) {
+    public Siswa(String uidRfid, String nis, String namaLengkap, String kelas) {
         this.uidRfid = uidRfid;
         this.nis = nis;
         this.namaLengkap = namaLengkap;
