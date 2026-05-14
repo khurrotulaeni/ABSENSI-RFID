@@ -4,33 +4,29 @@
  */
 package com.mycompany.rfid_absensi_siswa.object;
 
-import java.time.LocalDateTime;
-
 /**
  *
  * @author titosukamenabung
  */
-public class LogAbsen {
+public class PengajuanIzin {
 
     private String nis;
     private String namaLengkap;
     private String kelas;
     private String tanggal;
-    private String waktu;
-    private String status;
-    private String uidRfid;
+    private String keterangan;
+    private String statusPengajuan;
 
-    public LogAbsen(String nis, String namaLengkap, String kelas, String tanggal, String waktu, String status, String uidRfid) {
+    public PengajuanIzin() {
+    }  
+
+    public PengajuanIzin(String nis, String namaLengkap, String kelas, String tanggal, String keterangan, String statusPengajuan) {
         this.nis = nis;
         this.namaLengkap = namaLengkap;
         this.kelas = kelas;
         this.tanggal = tanggal;
-        this.waktu = waktu;
-        this.status = status;
-        this.uidRfid = uidRfid;
-    }
-
-    public LogAbsen() {
+        this.keterangan = keterangan;
+        this.statusPengajuan = statusPengajuan;
     }
 
     public String getNis() {
@@ -65,28 +61,19 @@ public class LogAbsen {
         this.tanggal = tanggal;
     }
 
-    public String getWaktu() {
-        return waktu;
+    public String getKeterangan() {
+        return keterangan;
     }
 
-    public void setWaktu(String waktu) {
-        this.waktu = waktu;
+    public void setKeterangan(String keterangan) {
+        this.keterangan = keterangan;
     }
 
-    public String getStatus() {
-        return status;
+    public String getStatusPengajuan() {
+        return statusPengajuan;
     }
 
-    public void setStatus(String status) {
-        this.status = status;
+    public void setStatusPengajuan(String statusPengajuan) {
+        this.statusPengajuan = statusPengajuan;
     }
-
-    public String getUidRfid() {
-        return uidRfid;
-    }
-
-    public void setUidRfid(String uidRfid) {
-        this.uidRfid = uidRfid;
-    }
-
 }
