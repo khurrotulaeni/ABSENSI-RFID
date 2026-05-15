@@ -4,14 +4,20 @@
  */
 package absensiRFID.GUI;
 
+import absensiRFID.DAO.GenericDAO;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import org.bson.Document;
+
 
 /**
  *
  * @author organizer
  */
 public class AdminPage extends javax.swing.JFrame {
+    
+    // Ganti 'Siswa' dengan nama class model kamu jika beda
+    GenericDAO<Document> siswaDAO = new GenericDAO<>("Siswa", Document.class);  
 
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(AdminPage.class.getName());
 
@@ -20,6 +26,7 @@ public class AdminPage extends javax.swing.JFrame {
      */
     public AdminPage() {
         initComponents();
+        showData("");
 
     }
 
@@ -61,7 +68,10 @@ public class AdminPage extends javax.swing.JFrame {
         pKelas = new javax.swing.JComboBox<>();
         btnSave = new javax.swing.JButton();
         btnEdit = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
+        btnRefresh = new javax.swing.JButton();
+        jPanel2 = new javax.swing.JPanel();
+        jLabel2 = new javax.swing.JLabel();
+        txtCari = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
         pHeader = new javax.swing.JPanel();
@@ -292,15 +302,36 @@ public class AdminPage extends javax.swing.JFrame {
 
         btnEdit.setBackground(new java.awt.Color(255, 204, 51));
         btnEdit.setText("Update");
-        pInput.add(btnEdit, new org.netbeans.lib.awtextra.AbsoluteConstraints(890, 120, 120, 35));
-
-        jButton3.setText("Refresh");
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
+        btnEdit.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
+                btnEditActionPerformed(evt);
             }
         });
-        pInput.add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(890, 160, 120, 35));
+        pInput.add(btnEdit, new org.netbeans.lib.awtextra.AbsoluteConstraints(890, 120, 120, 35));
+
+        btnRefresh.setText("Refresh");
+        btnRefresh.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRefreshActionPerformed(evt);
+            }
+        });
+        pInput.add(btnRefresh, new org.netbeans.lib.awtextra.AbsoluteConstraints(890, 160, 120, 35));
+
+        jPanel2.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(204, 204, 204)));
+        jPanel2.setLayout(new java.awt.BorderLayout());
+
+        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/search.png"))); // NOI18N
+        jPanel2.add(jLabel2, java.awt.BorderLayout.LINE_START);
+
+        txtCari.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtCariActionPerformed(evt);
+            }
+        });
+        jPanel2.add(txtCari, java.awt.BorderLayout.CENTER);
+
+        pInput.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(800, 240, 250, 40));
 
         pContent.add(pInput, java.awt.BorderLayout.NORTH);
 
@@ -386,6 +417,7 @@ public class AdminPage extends javax.swing.JFrame {
             String nama = txtNama.getText();
             String jurusan = pJurusan.getSelectedItem().toString();
             String kelas = pKelas.getSelectedItem().toString();
+            showData("");
 
             // Validasi: Jangan biarkan data kosong masuk ke DB
             if (uid.isEmpty() || nama.isEmpty() || rfid.isEmpty()) {
@@ -440,17 +472,16 @@ public class AdminPage extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_pKelasActionPerformed
 
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+    private void btnRefreshActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRefreshActionPerformed
         refreshTable();
-    }//GEN-LAST:event_jButton3ActionPerformed
+    }//GEN-LAST:event_btnRefreshActionPerformed
 
     private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
        int column = jTable1.columnAtPoint(evt.getPoint());
     int row = jTable1.getSelectedRow();
 
     // Cek apakah yang diklik adalah kolom ACTION (indeks 4)
-    if (column == 4 && row != -1) {
-        
+    if (row != -1) {
         // Buat pilihan menu muncul (Edit atau Delete)
         Object[] options = {"Edit", "Delete", "Batal"};
         int choice = JOptionPane.showOptionDialog(this, 
@@ -468,6 +499,50 @@ public class AdminPage extends javax.swing.JFrame {
     }
     }//GEN-LAST:event_jTable1MouseClicked
 
+    private void btnEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditActionPerformed
+     try {
+        // 1. Ambil data TERBARU yang sudah kamu ketik di kotak input
+        String idSiswa = txtUid.getText(); // ID sebagai kunci
+        String rfid = txtId.getText();
+        String nama = txtNama.getText();
+        String jurusan = pJurusan.getSelectedItem().toString();
+        String kelas = pKelas.getSelectedItem().toString();
+
+        // Validasi simpel: pastikan ID tidak kosong
+        if (idSiswa.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Pilih data di tabel dulu!");
+            return;
+        }
+
+        // 2. Bungkus data baru tersebut ke dalam Document
+        org.bson.Document dataBaru = new org.bson.Document("idSiswa", idSiswa)
+                .append("namaLengkap", nama)
+                .append("kelasSiswa", kelas)
+                .append("jurusanSiswa", jurusan)
+                .append("uidRfid", rfid);
+
+        // 3. SURUH DAO UNTUK UPDATE KE MONGODB
+        // Cari yang "idSiswa"-nya sama, lalu timpa dengan dataBaru
+        siswaDAO.update("idSiswa", idSiswa, dataBaru);
+
+        // 4. Beri tahu user kalau berhasil
+        JOptionPane.showMessageDialog(this, "Berhasil Update data: " + nama);
+
+        // 5. Segarkan tampilan tabel agar nama baru muncul
+        refreshTable();
+        resetForm();
+
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(this, "Error saat update: " + e.getMessage());
+    }
+    }//GEN-LAST:event_btnEditActionPerformed
+
+    private void txtCariActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCariActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtCariActionPerformed
+    private void txtCariKeyReleased(java.awt.event.KeyEvent evt) {                                    
+        showData(txtCari.getText());
+    }                   
     /**
      * @param args the command line arguments
      */
@@ -498,13 +573,15 @@ public class AdminPage extends javax.swing.JFrame {
     private javax.swing.JButton btnDashboard;
     private javax.swing.JButton btnEdit;
     private javax.swing.JButton btnLapor;
+    private javax.swing.JButton btnRefresh;
     private javax.swing.JButton btnSave;
     private javax.swing.JLabel iconBook;
-    private javax.swing.JButton jButton3;
     private javax.swing.JLabel jDaftar;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel jSmart;
     private javax.swing.JTable jTable1;
@@ -525,6 +602,7 @@ public class AdminPage extends javax.swing.JFrame {
     private javax.swing.JLabel titleNama;
     private javax.swing.JLabel titleRfidId;
     private javax.swing.JLabel titleUid;
+    private javax.swing.JTextField txtCari;
     private javax.swing.JTextField txtId;
     private javax.swing.JTextField txtNama;
     private javax.swing.JLabel txtSchool;
@@ -571,13 +649,15 @@ public class AdminPage extends javax.swing.JFrame {
     private void aksiEdit(int row) {
         try {
             // Mengambil data dari tabel (urutan kolom: 0:ID, 1:UID, 2:Nama, 3:Jurusan, 4:Kelas)
-            String uidSiswa = jTable1.getValueAt(row, 1).toString();
+            String uidSiswa = jTable1.getValueAt(row, 0).toString();
+            String uidRfid = jTable1.getValueAt(row, 1).toString();
             String nama = jTable1.getValueAt(row, 2).toString();
             String jurusan = jTable1.getValueAt(row, 3).toString();
             String kelas = jTable1.getValueAt(row, 4).toString();
 
             // Set ke textfield agar bisa diedit
             txtUid.setText(uidSiswa);
+            txtId.setText(uidRfid);
             txtNama.setText(nama);
             pJurusan.setSelectedItem(jurusan);
             pKelas.setSelectedItem(kelas);
@@ -607,6 +687,11 @@ public class AdminPage extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(this, "Gagal hapus: " + e.getMessage());
             }
         }
+    }
+
+    private void showData(String key) {
+        SiswaService S = new SiswaService();
+        S.tampilKaryawan(jTable1, key);
     }
 }
     
