@@ -4,12 +4,15 @@
  */
 package absensiRFID.GUI;
 
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author organizer
  */
 public class AdminPage extends javax.swing.JFrame {
-    
+
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(AdminPage.class.getName());
 
     /**
@@ -17,6 +20,7 @@ public class AdminPage extends javax.swing.JFrame {
      */
     public AdminPage() {
         initComponents();
+
     }
 
     /**
@@ -29,25 +33,440 @@ public class AdminPage extends javax.swing.JFrame {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
+        pIcon = new javax.swing.JPanel();
+        iconBook = new javax.swing.JLabel();
+        txtSchool = new javax.swing.JLabel();
+        btnDashboard = new javax.swing.JButton();
+        btnDaftar = new javax.swing.JButton();
+        btnLapor = new javax.swing.JButton();
+        panelUtama = new javax.swing.JPanel();
+        pContent = new javax.swing.JPanel();
+        pInput = new javax.swing.JPanel();
+        titleUid = new javax.swing.JLabel();
+        titleRfidId = new javax.swing.JLabel();
+        titleNama = new javax.swing.JLabel();
+        titleJurusan = new javax.swing.JLabel();
+        titleKelas = new javax.swing.JLabel();
+        panelUid = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
+        txtUid = new javax.swing.JTextField();
+        panelRfid = new javax.swing.JPanel();
+        txtId = new javax.swing.JTextField();
+        panelNama = new javax.swing.JPanel();
+        jLabel3 = new javax.swing.JLabel();
+        txtNama = new javax.swing.JTextField();
+        panelJurusan = new javax.swing.JPanel();
+        pJurusan = new javax.swing.JComboBox<>();
+        panelKelas = new javax.swing.JPanel();
+        pKelas = new javax.swing.JComboBox<>();
+        btnSave = new javax.swing.JButton();
+        btnEdit = new javax.swing.JButton();
+        jButton3 = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTable1 = new javax.swing.JTable();
+        pHeader = new javax.swing.JPanel();
+        jDaftar = new javax.swing.JLabel();
+        jSmart = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+        setUndecorated(true);
+
+        jPanel1.setBackground(new java.awt.Color(44, 62, 80));
+        jPanel1.setMinimumSize(new java.awt.Dimension(250, 800));
+        jPanel1.setPreferredSize(new java.awt.Dimension(250, 800));
+
+        pIcon.setBackground(new java.awt.Color(33, 47, 61));
+
+        iconBook.setBackground(new java.awt.Color(0, 153, 255));
+        iconBook.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/school.png"))); // NOI18N
+
+        txtSchool.setBackground(new java.awt.Color(0, 102, 255));
+        txtSchool.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        txtSchool.setForeground(new java.awt.Color(255, 255, 255));
+        txtSchool.setText("School Admin");
+
+        javax.swing.GroupLayout pIconLayout = new javax.swing.GroupLayout(pIcon);
+        pIcon.setLayout(pIconLayout);
+        pIconLayout.setHorizontalGroup(
+            pIconLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pIconLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(iconBook)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(txtSchool, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+        pIconLayout.setVerticalGroup(
+            pIconLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pIconLayout.createSequentialGroup()
+                .addGap(0, 12, Short.MAX_VALUE)
+                .addComponent(iconBook))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pIconLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(txtSchool, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(34, 34, 34))
+        );
+
+        btnDashboard.setBackground(new java.awt.Color(52, 73, 94));
+        btnDashboard.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnDashboard.setForeground(new java.awt.Color(255, 255, 255));
+        btnDashboard.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/dashboard.png"))); // NOI18N
+        btnDashboard.setText("DASHBOARD");
+        btnDashboard.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+
+        btnDaftar.setBackground(new java.awt.Color(52, 73, 94));
+        btnDaftar.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnDaftar.setForeground(new java.awt.Color(255, 255, 255));
+        btnDaftar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/addUser.png"))); // NOI18N
+        btnDaftar.setText("PENDAFTARAN SISWA");
+        btnDaftar.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        btnDaftar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDaftarActionPerformed(evt);
+            }
+        });
+
+        btnLapor.setBackground(new java.awt.Color(52, 73, 94));
+        btnLapor.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnLapor.setForeground(new java.awt.Color(255, 255, 255));
+        btnLapor.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/laporan.png"))); // NOI18N
+        btnLapor.setText("LAPORAN");
+        btnLapor.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 200, Short.MAX_VALUE)
+            .addComponent(pIcon, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(19, 19, 19)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(btnDashboard, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnDaftar, javax.swing.GroupLayout.DEFAULT_SIZE, 212, Short.MAX_VALUE)
+                    .addComponent(btnLapor, javax.swing.GroupLayout.DEFAULT_SIZE, 212, Short.MAX_VALUE))
+                .addContainerGap(19, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 590, Short.MAX_VALUE)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addComponent(pIcon, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(53, 53, 53)
+                .addComponent(btnDashboard, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(33, 33, 33)
+                .addComponent(btnDaftar, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(33, 33, 33)
+                .addComponent(btnLapor, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 393, Short.MAX_VALUE))
         );
 
-        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 200, 590));
+        getContentPane().add(jPanel1, java.awt.BorderLayout.WEST);
+
+        panelUtama.setBackground(new java.awt.Color(255, 255, 255));
+        panelUtama.setLayout(new java.awt.BorderLayout());
+
+        pContent.setBorder(javax.swing.BorderFactory.createEmptyBorder(20, 30, 10, 30));
+        pContent.setPreferredSize(new java.awt.Dimension(250, 300));
+        pContent.setLayout(new java.awt.BorderLayout());
+
+        pInput.setBackground(new java.awt.Color(255, 255, 255));
+        pInput.setBorder(javax.swing.BorderFactory.createTitledBorder("Data Pendaftaran Siswa"));
+        pInput.setPreferredSize(new java.awt.Dimension(250, 300));
+        pInput.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        titleUid.setBackground(new java.awt.Color(255, 255, 255));
+        titleUid.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        titleUid.setText("UID");
+        pInput.add(titleUid, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 50, 100, 20));
+
+        titleRfidId.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        titleRfidId.setText("RFID ID");
+        titleRfidId.setPreferredSize(new java.awt.Dimension(220, 35));
+        pInput.add(titleRfidId, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 50, 100, 20));
+
+        titleNama.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        titleNama.setText("NAMA");
+        titleNama.setMaximumSize(new java.awt.Dimension(24, 20));
+        titleNama.setMinimumSize(new java.awt.Dimension(24, 20));
+        pInput.add(titleNama, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 50, 100, 20));
+
+        titleJurusan.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        titleJurusan.setText("JURUSAN");
+        pInput.add(titleJurusan, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 140, -1, -1));
+
+        titleKelas.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        titleKelas.setText("KELAS");
+        pInput.add(titleKelas, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 140, -1, -1));
+
+        panelUid.setBackground(new java.awt.Color(255, 255, 255));
+        panelUid.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(204, 204, 204)));
+        panelUid.setLayout(new java.awt.BorderLayout());
+
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/uid.png"))); // NOI18N
+        jLabel1.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 10, 1, 1));
+        panelUid.add(jLabel1, java.awt.BorderLayout.WEST);
+
+        txtUid.setBorder(null);
+        txtUid.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtUidActionPerformed(evt);
+            }
+        });
+        panelUid.add(txtUid, java.awt.BorderLayout.CENTER);
+
+        pInput.add(panelUid, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 80, 220, 40));
+
+        panelRfid.setBackground(new java.awt.Color(255, 255, 255));
+        panelRfid.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(204, 204, 204)));
+        panelRfid.setPreferredSize(new java.awt.Dimension(220, 35));
+        panelRfid.setLayout(new java.awt.BorderLayout());
+
+        txtId.setBorder(null);
+        txtId.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtIdActionPerformed(evt);
+            }
+        });
+        panelRfid.add(txtId, java.awt.BorderLayout.CENTER);
+
+        pInput.add(panelRfid, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 80, 220, 40));
+
+        panelNama.setBackground(new java.awt.Color(255, 255, 255));
+        panelNama.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(204, 204, 204)));
+        panelNama.setPreferredSize(new java.awt.Dimension(300, 40));
+        panelNama.setLayout(new java.awt.BorderLayout());
+
+        jLabel3.setBackground(new java.awt.Color(255, 255, 255));
+        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/nama.png"))); // NOI18N
+        jLabel3.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 10, 1, 1));
+        panelNama.add(jLabel3, java.awt.BorderLayout.LINE_START);
+
+        txtNama.setBorder(null);
+        txtNama.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtNamaActionPerformed(evt);
+            }
+        });
+        panelNama.add(txtNama, java.awt.BorderLayout.CENTER);
+
+        pInput.add(panelNama, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 80, 250, 40));
+
+        panelJurusan.setBackground(new java.awt.Color(255, 255, 255));
+        panelJurusan.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
+        panelJurusan.setPreferredSize(new java.awt.Dimension(220, 40));
+        panelJurusan.setLayout(new java.awt.BorderLayout());
+
+        pJurusan.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Pilih Jurusan", "MIPA", "IPS", "BAHASA DAN BUDAYA" }));
+        pJurusan.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(204, 204, 204), 1, true));
+        pJurusan.setFocusable(false);
+        pJurusan.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                pJurusanActionPerformed(evt);
+            }
+        });
+        panelJurusan.add(pJurusan, java.awt.BorderLayout.CENTER);
+
+        pInput.add(panelJurusan, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 170, 220, 40));
+
+        panelKelas.setBackground(new java.awt.Color(255, 255, 255));
+        panelKelas.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
+        panelKelas.setLayout(new java.awt.BorderLayout());
+
+        pKelas.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Pilih Kelas", "X", "XI", "XII" }));
+        pKelas.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                pKelasActionPerformed(evt);
+            }
+        });
+        panelKelas.add(pKelas, java.awt.BorderLayout.CENTER);
+
+        pInput.add(panelKelas, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 170, 220, 40));
+
+        btnSave.setBackground(new java.awt.Color(102, 255, 102));
+        btnSave.setText("Save");
+        btnSave.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSaveActionPerformed(evt);
+            }
+        });
+        pInput.add(btnSave, new org.netbeans.lib.awtextra.AbsoluteConstraints(890, 80, 120, 35));
+
+        btnEdit.setBackground(new java.awt.Color(255, 204, 51));
+        btnEdit.setText("Update");
+        pInput.add(btnEdit, new org.netbeans.lib.awtextra.AbsoluteConstraints(890, 120, 120, 35));
+
+        jButton3.setText("Refresh");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
+        pInput.add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(890, 160, 120, 35));
+
+        pContent.add(pInput, java.awt.BorderLayout.NORTH);
+
+        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null}
+            },
+            new String [] {
+                "USERS ID", "UID RFID", "NAMA", "JURUSAN", "KELAS"
+            }
+        ));
+        jTable1.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_ALL_COLUMNS);
+        jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTable1MouseClicked(evt);
+            }
+        });
+        jScrollPane1.setViewportView(jTable1);
+
+        pContent.add(jScrollPane1, java.awt.BorderLayout.CENTER);
+
+        panelUtama.add(pContent, java.awt.BorderLayout.CENTER);
+
+        pHeader.setBackground(new java.awt.Color(52, 73, 94));
+
+        jDaftar.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
+        jDaftar.setForeground(new java.awt.Color(255, 255, 255));
+        jDaftar.setText("PENDAFTARAN SISWA ");
+
+        jSmart.setBackground(new java.awt.Color(204, 204, 204));
+        jSmart.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        jSmart.setForeground(new java.awt.Color(255, 255, 255));
+        jSmart.setText("SMART ATTENDANCE");
+
+        javax.swing.GroupLayout pHeaderLayout = new javax.swing.GroupLayout(pHeader);
+        pHeader.setLayout(pHeaderLayout);
+        pHeaderLayout.setHorizontalGroup(
+            pHeaderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pHeaderLayout.createSequentialGroup()
+                .addGap(30, 30, 30)
+                .addGroup(pHeaderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jDaftar, javax.swing.GroupLayout.PREFERRED_SIZE, 403, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jSmart, javax.swing.GroupLayout.PREFERRED_SIZE, 257, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(694, Short.MAX_VALUE))
+        );
+        pHeaderLayout.setVerticalGroup(
+            pHeaderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pHeaderLayout.createSequentialGroup()
+                .addGap(17, 17, 17)
+                .addComponent(jDaftar, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jSmart, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(15, Short.MAX_VALUE))
+        );
+
+        panelUtama.add(pHeader, java.awt.BorderLayout.NORTH);
+
+        getContentPane().add(panelUtama, java.awt.BorderLayout.CENTER);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnDaftarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDaftarActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnDaftarActionPerformed
+
+    private void txtNamaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNamaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtNamaActionPerformed
+
+    private void txtIdActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtIdActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtIdActionPerformed
+
+    private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
+
+            // 1. Ambil data dari semua field input
+            String uid = txtUid.getText();  
+            String rfid = txtId.getText();
+            String nama = txtNama.getText();
+            String jurusan = pJurusan.getSelectedItem().toString();
+            String kelas = pKelas.getSelectedItem().toString();
+
+            // Validasi: Jangan biarkan data kosong masuk ke DB
+            if (uid.isEmpty() || nama.isEmpty() || rfid.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "UID dan Nama wajib diisi!");
+                return;
+            }
+
+            /// 2. Proses Simpan
+           try {
+               String uri = "mongodb://localhost:27017";
+               try (com.mongodb.client.MongoClient mongoClient = com.mongodb.client.MongoClients.create(uri)) {
+                   com.mongodb.client.MongoDatabase database = mongoClient.getDatabase("Absensi");
+                   com.mongodb.client.MongoCollection<org.bson.Document> collection = database.getCollection("Siswa");
+
+                   // 2. LOGIKA PENGONDISIAN (CEK DUPLIKASI)
+                   // Cari apakah idSiswa ATAU uidRfid sudah ada di database
+                   org.bson.Document cekId = collection.find(new org.bson.Document("idSiswa", uid)).first();
+                   org.bson.Document cekRfid = collection.find(new org.bson.Document("uidRfid", rfid)).first();
+
+                   if (cekId != null) {
+                       JOptionPane.showMessageDialog(this, "Gagal! ID Siswa " + uid + " sudah terdaftar.", "Duplikasi Data", JOptionPane.WARNING_MESSAGE);
+                   } else if (cekRfid != null) {
+                       JOptionPane.showMessageDialog(this, "Gagal! Kartu RFID " + rfid + " sudah digunakan siswa lain.", "Duplikasi Data", JOptionPane.WARNING_MESSAGE);
+                   } else {
+                       // 3. Jika tidak ada duplikasi, baru jalankan simpan
+                       org.bson.Document doc = new org.bson.Document("idSiswa", uid)
+                               .append("namaLengkap", nama)
+                               .append("kelasSiswa", kelas)
+                               .append("jurusanSiswa", jurusan)
+                               .append("uidRfid", rfid);
+
+                       collection.insertOne(doc);
+                       JOptionPane.showMessageDialog(this, "Data Siswa Berhasil Disimpan!");
+
+                       refreshTable();
+                       resetForm();
+                   }
+               }
+           } catch (Exception e) {
+               JOptionPane.showMessageDialog(this, "Error: " + e.getMessage());
+    }//GEN-LAST:event_btnSaveActionPerformed
+}
+    private void txtUidActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtUidActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtUidActionPerformed
+
+    private void pJurusanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pJurusanActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_pJurusanActionPerformed
+
+    private void pKelasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pKelasActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_pKelasActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        refreshTable();
+    }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
+       int column = jTable1.columnAtPoint(evt.getPoint());
+    int row = jTable1.getSelectedRow();
+
+    // Cek apakah yang diklik adalah kolom ACTION (indeks 4)
+    if (column == 4 && row != -1) {
+        
+        // Buat pilihan menu muncul (Edit atau Delete)
+        Object[] options = {"Edit", "Delete", "Batal"};
+        int choice = JOptionPane.showOptionDialog(this, 
+                "Pilih aksi untuk data: " + jTable1.getValueAt(row, 1), 
+                "Action Menu",
+                JOptionPane.DEFAULT_OPTION, 
+                JOptionPane.QUESTION_MESSAGE, 
+                null, options, options[0]);
+
+        if (choice == 0) { // Jika pilih EDIT
+            aksiEdit(row);
+        } else if (choice == 1) { // Jika pilih DELETE
+            aksiDelete(row);
+        }
+    }
+    }//GEN-LAST:event_jTable1MouseClicked
 
     /**
      * @param args the command line arguments
@@ -75,6 +494,119 @@ public class AdminPage extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnDaftar;
+    private javax.swing.JButton btnDashboard;
+    private javax.swing.JButton btnEdit;
+    private javax.swing.JButton btnLapor;
+    private javax.swing.JButton btnSave;
+    private javax.swing.JLabel iconBook;
+    private javax.swing.JButton jButton3;
+    private javax.swing.JLabel jDaftar;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JLabel jSmart;
+    private javax.swing.JTable jTable1;
+    private javax.swing.JPanel pContent;
+    private javax.swing.JPanel pHeader;
+    private javax.swing.JPanel pIcon;
+    private javax.swing.JPanel pInput;
+    private javax.swing.JComboBox<String> pJurusan;
+    private javax.swing.JComboBox<String> pKelas;
+    private javax.swing.JPanel panelJurusan;
+    private javax.swing.JPanel panelKelas;
+    private javax.swing.JPanel panelNama;
+    private javax.swing.JPanel panelRfid;
+    private javax.swing.JPanel panelUid;
+    private javax.swing.JPanel panelUtama;
+    private javax.swing.JLabel titleJurusan;
+    private javax.swing.JLabel titleKelas;
+    private javax.swing.JLabel titleNama;
+    private javax.swing.JLabel titleRfidId;
+    private javax.swing.JLabel titleUid;
+    private javax.swing.JTextField txtId;
+    private javax.swing.JTextField txtNama;
+    private javax.swing.JLabel txtSchool;
+    private javax.swing.JTextField txtUid;
     // End of variables declaration//GEN-END:variables
+
+        private void refreshTable() {
+            DefaultTableModel model = new DefaultTableModel();
+            model.addColumn("USERS ID");
+            model.addColumn("UID RFID");
+            model.addColumn("NAMA");
+            model.addColumn("JURUSAN");
+            model.addColumn("KELAS");
+
+    try {
+        com.mongodb.client.MongoClient mongoClient = com.mongodb.client.MongoClients.create("mongodb://localhost:27017");
+        com.mongodb.client.MongoDatabase database = mongoClient.getDatabase("Absensi");
+        com.mongodb.client.MongoCollection<org.bson.Document> collection = database.getCollection("Siswa");
+
+        for (org.bson.Document doc : collection.find()) {
+            model.addRow(new Object[]{
+                doc.get("idSiswa").toString(),
+                doc.getString("uidRfid"),      // Sesuaikan dengan nama field di Compass
+                doc.getString("namaLengkap"),
+                doc.getString("jurusanSiswa"),
+                doc.getString("kelasSiswa")
+            });
+        }
+        jTable1.setModel(model); // Pastikan nama variabel tabel kamu benar
+        mongoClient.close();
+    } catch (Exception e) {
+        System.out.println("Error Refresh Tabel: " + e.getMessage());
+    }
+        }
+
+    private void resetForm() {
+            txtUid.setText("");
+            txtId.setText("");
+            txtNama.setText("");
+            pJurusan.setSelectedIndex(0); // Kembali ke "Pilih Jurusan"
+            pKelas.setSelectedIndex(0);   // Kembali ke "Pilih Kelas"        }
+    }
+    
+    private void aksiEdit(int row) {
+        try {
+            // Mengambil data dari tabel (urutan kolom: 0:ID, 1:UID, 2:Nama, 3:Jurusan, 4:Kelas)
+            String uidSiswa = jTable1.getValueAt(row, 1).toString();
+            String nama = jTable1.getValueAt(row, 2).toString();
+            String jurusan = jTable1.getValueAt(row, 3).toString();
+            String kelas = jTable1.getValueAt(row, 4).toString();
+
+            // Set ke textfield agar bisa diedit
+            txtUid.setText(uidSiswa);
+            txtNama.setText(nama);
+            pJurusan.setSelectedItem(jurusan);
+            pKelas.setSelectedItem(kelas);
+
+            JOptionPane.showMessageDialog(this, "Data dipilih. Silakan ubah lalu klik Update.");
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Gagal ambil data: " + e.getMessage());
+        }
+    }
+
+    private void aksiDelete(int row) {
+        int confirm = JOptionPane.showConfirmDialog(this, "Yakin hapus data ini?", "Hapus", JOptionPane.YES_NO_OPTION);
+        if (confirm == JOptionPane.YES_OPTION) {
+            try {
+                String idSiswa = jTable1.getValueAt(row, 1).toString();
+                
+                com.mongodb.client.MongoClient mongoClient = com.mongodb.client.MongoClients.create("mongodb://localhost:27017");
+                com.mongodb.client.MongoDatabase database = mongoClient.getDatabase("Absensi");
+                com.mongodb.client.MongoCollection<org.bson.Document> collection = database.getCollection("Siswa");
+
+                collection.deleteOne(new org.bson.Document("idSiswa", idSiswa));
+                mongoClient.close();
+
+                JOptionPane.showMessageDialog(this, "Berhasil dihapus!");
+                refreshTable();
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(this, "Gagal hapus: " + e.getMessage());
+            }
+        }
+    }
 }
+    

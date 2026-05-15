@@ -5,6 +5,7 @@
 package absensiRFID.GUI;
 
 import java.awt.Color;
+import javax.swing.JOptionPane;
 /**
  *
  * @author organizer
@@ -130,7 +131,46 @@ public class LoginPage extends javax.swing.JFrame {
     }//GEN-LAST:event_txtEmailActionPerformed
 
     private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginActionPerformed
-        // TODO add your handling code here:
+     // 1. Ambil input dari user
+    String emailUser = txtEmail.getText().trim();
+    String passUser = String.valueOf(txtPassword.getPassword()).trim();
+
+    // Validasi sederhana agar tidak kosong
+    if (emailUser.isEmpty() || passUser.isEmpty()) {
+        JOptionPane.showMessageDialog(this, "Email dan Password tidak boleh kosong!", "Peringatan", JOptionPane.WARNING_MESSAGE);
+        return;
+    }
+
+    try {
+        // 2. Koneksi ke MongoDB (Sesuaikan alamatnya jika bukan localhost)
+        String uri = "mongodb://localhost:27017";
+        try (com.mongodb.client.MongoClient mongoClient = com.mongodb.client.MongoClients.create(uri)) {
+            
+            // Pilih Database dan Collection (Ganti nama_db dengan nama database kamu di Compass)
+            com.mongodb.client.MongoDatabase database = mongoClient.getDatabase("Absensi");
+            com.mongodb.client.MongoCollection<org.bson.Document> collection = database.getCollection("admin");
+
+            // 3. Cari user yang email DAN password-nya cocok
+            // Ingat: MongoDB itu case-sensitive (huruf besar/kecil berpengaruh)
+            org.bson.Document query = new org.bson.Document("email", emailUser)
+                                              .append("password", passUser);
+            
+            org.bson.Document userTerdaftar = collection.find(query).first();
+
+            // 4. Cek Hasilnya
+            if (userTerdaftar != null) {
+                JOptionPane.showMessageDialog(null, "Login Berhasil! Selamat Datang.");
+                
+                // Pindah ke halaman Dashboard
+                new AdminPage().setVisible(true); 
+                this.dispose(); // Tutup halaman login
+            } else {
+                JOptionPane.showMessageDialog(null, "Email atau Password Salah!", "Gagal Login", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(this, "Koneksi ke MongoDB Gagal: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+    }   // TODO add your handling code here:
     }//GEN-LAST:event_btnLoginActionPerformed
 
     private void txtPasswordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtPasswordActionPerformed
