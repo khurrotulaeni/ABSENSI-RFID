@@ -10,6 +10,7 @@ import org.bson.codecs.pojo.PojoCodecProvider;
 
 public class MongoManager {
     private static MongoClient mongoClient;
+    private static MongoDatabase database; // Tambahkan variabel database statis
     private static final String DATABASE_NAME = "Absensi";
 
     public static MongoDatabase getDatabase() {
@@ -24,8 +25,8 @@ public class MongoManager {
             mongoClient = MongoClients.create("mongodb://localhost:27017");
             
             // Mengembalikan database dengan registry yang sudah dikonfigurasi
-            return mongoClient.getDatabase(DATABASE_NAME).withCodecRegistry(pojoCodecRegistry);
+            database = mongoClient.getDatabase(DATABASE_NAME).withCodecRegistry(pojoCodecRegistry);
         }
-        return mongoClient.getDatabase(DATABASE_NAME);
+        return database;
     }
 }

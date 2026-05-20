@@ -5,15 +5,11 @@
 package absensiRFID.GUI;
 
 import absensiRFID.DAO.GenericDAO;
+import com.mycompany.rfid_absensi_siswa.object.SiswaService;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import org.bson.Document;
 
-
-/**
- *
- * @author organizer
- */
 public class AdminPage extends javax.swing.JFrame {
     
     // Ganti 'Siswa' dengan nama class model kamu jika beda
@@ -26,8 +22,21 @@ public class AdminPage extends javax.swing.JFrame {
      */
     public AdminPage() {
         initComponents();
-        showData("");
-
+        
+        // 1. Memanggil DashboardPage yang baru (JPanel)
+        DashboardPage dbPage = new DashboardPage();
+        
+        // 2. Masukkan ke dalam pContent (Wadah CardLayout)
+        // Note: pPendaftaran adalah panel bawaan NetBeans kamu
+        pContent.add(dbPage, "HalamanDashboard");
+        pContent.add(pPendaftaran, "HalamanPendaftaran");
+        
+        // 3. Tampilkan halaman pendaftaran pertama kali
+        java.awt.CardLayout cl = (java.awt.CardLayout) pContent.getLayout();
+        cl.show(pContent, "HalamanPendaftaran");
+        
+        // 4. Langsung panggil class SiswaService secara instan
+        new com.mycompany.rfid_absensi_siswa.object.SiswaService().tampilanSiswa(jTable1, "");
     }
 
     /**
@@ -46,8 +55,12 @@ public class AdminPage extends javax.swing.JFrame {
         btnDashboard = new javax.swing.JButton();
         btnDaftar = new javax.swing.JButton();
         btnLapor = new javax.swing.JButton();
+        btnLogout = new javax.swing.JButton();
         panelUtama = new javax.swing.JPanel();
         pContent = new javax.swing.JPanel();
+        pPendaftaran = new javax.swing.JPanel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTable1 = new javax.swing.JTable();
         pInput = new javax.swing.JPanel();
         titleUid = new javax.swing.JLabel();
         titleRfidId = new javax.swing.JLabel();
@@ -72,8 +85,6 @@ public class AdminPage extends javax.swing.JFrame {
         jPanel2 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         txtCari = new javax.swing.JTextField();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
         pHeader = new javax.swing.JPanel();
         jDaftar = new javax.swing.JLabel();
         jSmart = new javax.swing.JLabel();
@@ -123,6 +134,11 @@ public class AdminPage extends javax.swing.JFrame {
         btnDashboard.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/dashboard.png"))); // NOI18N
         btnDashboard.setText("DASHBOARD");
         btnDashboard.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        btnDashboard.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDashboardActionPerformed(evt);
+            }
+        });
 
         btnDaftar.setBackground(new java.awt.Color(52, 73, 94));
         btnDaftar.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
@@ -143,6 +159,17 @@ public class AdminPage extends javax.swing.JFrame {
         btnLapor.setText("LAPORAN");
         btnLapor.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
 
+        btnLogout.setBackground(new java.awt.Color(52, 73, 94));
+        btnLogout.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnLogout.setForeground(new java.awt.Color(255, 255, 255));
+        btnLogout.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/logout.png"))); // NOI18N
+        btnLogout.setText("LOGOUT");
+        btnLogout.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLogoutActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -153,7 +180,8 @@ public class AdminPage extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(btnDashboard, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnDaftar, javax.swing.GroupLayout.DEFAULT_SIZE, 212, Short.MAX_VALUE)
-                    .addComponent(btnLapor, javax.swing.GroupLayout.DEFAULT_SIZE, 212, Short.MAX_VALUE))
+                    .addComponent(btnLapor, javax.swing.GroupLayout.DEFAULT_SIZE, 212, Short.MAX_VALUE)
+                    .addComponent(btnLogout, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap(19, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -166,7 +194,9 @@ public class AdminPage extends javax.swing.JFrame {
                 .addComponent(btnDaftar, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(33, 33, 33)
                 .addComponent(btnLapor, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 393, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 359, Short.MAX_VALUE)
+                .addComponent(btnLogout, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(71, 71, 71))
         );
 
         getContentPane().add(jPanel1, java.awt.BorderLayout.WEST);
@@ -176,7 +206,26 @@ public class AdminPage extends javax.swing.JFrame {
 
         pContent.setBorder(javax.swing.BorderFactory.createEmptyBorder(20, 30, 10, 30));
         pContent.setPreferredSize(new java.awt.Dimension(250, 300));
-        pContent.setLayout(new java.awt.BorderLayout());
+        pContent.setLayout(new java.awt.CardLayout());
+
+        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null}
+            },
+            new String [] {
+                "USERS ID", "UID RFID", "NAMA", "JURUSAN", "KELAS"
+            }
+        ));
+        jTable1.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_ALL_COLUMNS);
+        jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTable1MouseClicked(evt);
+            }
+        });
+        jScrollPane1.setViewportView(jTable1);
 
         pInput.setBackground(new java.awt.Color(255, 255, 255));
         pInput.setBorder(javax.swing.BorderFactory.createTitledBorder("Data Pendaftaran Siswa"));
@@ -185,11 +234,11 @@ public class AdminPage extends javax.swing.JFrame {
 
         titleUid.setBackground(new java.awt.Color(255, 255, 255));
         titleUid.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        titleUid.setText("UID");
+        titleUid.setText("USER ID");
         pInput.add(titleUid, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 50, 100, 20));
 
         titleRfidId.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        titleRfidId.setText("RFID ID");
+        titleRfidId.setText("UID RFID");
         titleRfidId.setPreferredSize(new java.awt.Dimension(220, 35));
         pInput.add(titleRfidId, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 50, 100, 20));
 
@@ -333,28 +382,27 @@ public class AdminPage extends javax.swing.JFrame {
 
         pInput.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(800, 240, 250, 40));
 
-        pContent.add(pInput, java.awt.BorderLayout.NORTH);
+        javax.swing.GroupLayout pPendaftaranLayout = new javax.swing.GroupLayout(pPendaftaran);
+        pPendaftaran.setLayout(pPendaftaranLayout);
+        pPendaftaranLayout.setHorizontalGroup(
+            pPendaftaranLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pPendaftaranLayout.createSequentialGroup()
+                .addGroup(pPendaftaranLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(pInput, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 1068, Short.MAX_VALUE))
+                .addContainerGap(29, Short.MAX_VALUE))
+        );
+        pPendaftaranLayout.setVerticalGroup(
+            pPendaftaranLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pPendaftaranLayout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(pInput, javax.swing.GroupLayout.PREFERRED_SIZE, 308, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 436, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+        );
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null}
-            },
-            new String [] {
-                "USERS ID", "UID RFID", "NAMA", "JURUSAN", "KELAS"
-            }
-        ));
-        jTable1.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_ALL_COLUMNS);
-        jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jTable1MouseClicked(evt);
-            }
-        });
-        jScrollPane1.setViewportView(jTable1);
-
-        pContent.add(jScrollPane1, java.awt.BorderLayout.CENTER);
+        pContent.add(pPendaftaran, "card2");
 
         panelUtama.add(pContent, java.awt.BorderLayout.CENTER);
 
@@ -378,7 +426,7 @@ public class AdminPage extends javax.swing.JFrame {
                 .addGroup(pHeaderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jDaftar, javax.swing.GroupLayout.PREFERRED_SIZE, 403, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jSmart, javax.swing.GroupLayout.PREFERRED_SIZE, 257, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(694, Short.MAX_VALUE))
+                .addContainerGap(724, Short.MAX_VALUE))
         );
         pHeaderLayout.setVerticalGroup(
             pHeaderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -398,7 +446,8 @@ public class AdminPage extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnDaftarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDaftarActionPerformed
-        // TODO add your handling code here:
+        java.awt.CardLayout cl = (java.awt.CardLayout) pContent.getLayout();
+        cl.show(pContent, "HalamanPendaftaran");
     }//GEN-LAST:event_btnDaftarActionPerformed
 
     private void txtNamaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNamaActionPerformed
@@ -540,6 +589,15 @@ public class AdminPage extends javax.swing.JFrame {
     private void txtCariActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCariActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtCariActionPerformed
+
+    private void btnDashboardActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDashboardActionPerformed
+        java.awt.CardLayout cl = (java.awt.CardLayout) pContent.getLayout();
+        cl.show(pContent, "HalamanDashboard");
+    }//GEN-LAST:event_btnDashboardActionPerformed
+
+    private void btnLogoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLogoutActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnLogoutActionPerformed
     private void txtCariKeyReleased(java.awt.event.KeyEvent evt) {                                    
         showData(txtCari.getText());
     }                   
@@ -547,24 +605,7 @@ public class AdminPage extends javax.swing.JFrame {
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ReflectiveOperationException | javax.swing.UnsupportedLookAndFeelException ex) {
-            logger.log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
 
-        /* Create and display the form */
         java.awt.EventQueue.invokeLater(() -> new AdminPage().setVisible(true));
     }
 
@@ -573,6 +614,7 @@ public class AdminPage extends javax.swing.JFrame {
     private javax.swing.JButton btnDashboard;
     private javax.swing.JButton btnEdit;
     private javax.swing.JButton btnLapor;
+    private javax.swing.JButton btnLogout;
     private javax.swing.JButton btnRefresh;
     private javax.swing.JButton btnSave;
     private javax.swing.JLabel iconBook;
@@ -591,6 +633,7 @@ public class AdminPage extends javax.swing.JFrame {
     private javax.swing.JPanel pInput;
     private javax.swing.JComboBox<String> pJurusan;
     private javax.swing.JComboBox<String> pKelas;
+    private javax.swing.JPanel pPendaftaran;
     private javax.swing.JPanel panelJurusan;
     private javax.swing.JPanel panelKelas;
     private javax.swing.JPanel panelNama;
@@ -631,7 +674,7 @@ public class AdminPage extends javax.swing.JFrame {
                 doc.getString("kelasSiswa")
             });
         }
-        jTable1.setModel(model); // Pastikan nama variabel tabel kamu benar
+        jTable1.setModel(model); // Pastikan nama variabel tabel benar
         mongoClient.close();
     } catch (Exception e) {
         System.out.println("Error Refresh Tabel: " + e.getMessage());
@@ -691,7 +734,7 @@ public class AdminPage extends javax.swing.JFrame {
 
     private void showData(String key) {
         SiswaService S = new SiswaService();
-        S.tampilKaryawan(jTable1, key);
+        S.tampilanSiswa(jTable1, key);
     }
 }
     

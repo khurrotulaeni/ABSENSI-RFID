@@ -65,5 +65,13 @@ public class Siswa {
     public void setKelas(String kelas) {
         this.kelas = kelas;
     }
+
+    Object getidSiswa() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    Object getJurusan() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
         
 }
