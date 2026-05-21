@@ -10,28 +10,30 @@ package com.mycompany.rfid_absensi_siswa.object;
  * @author titosukamenabung
  */
 public class Siswa {
+
+    private String idSiswa;
     private String uidRfid;
-    private String nis;
     private String namaLengkap;
-    private String kelas;
-    
+    private String jurusanSiswa;
+    private String kelasSiswa;
+
     public Siswa() {
     }
 
-    public Siswa(String uidRfid, String nis, String namaLengkap, String kelas) {
+    public Siswa(String idSiswa, String uidRfid, String namaLengkap, String jurusanSiswa, String kelasSiswa) {
+        this.idSiswa = idSiswa;
         this.uidRfid = uidRfid;
-        this.nis = nis;
         this.namaLengkap = namaLengkap;
-        this.kelas = kelas;
+        this.jurusanSiswa = jurusanSiswa;
+        this.kelasSiswa = kelasSiswa;
     }
-    
-    @Override
-    public String toString() {
-        return "Siswa_Users{" + 
-                "uidRfid=" + uidRfid + 
-                ", nis=" + nis + 
-                ", namaLengkap=" + namaLengkap + 
-                ", kelas=" + kelas + '}';
+
+    public String getIdSiswa() {
+        return idSiswa;
+    }
+
+    public void setIdSiswa(String idSiswa) {
+        this.idSiswa = idSiswa;
     }
 
     public String getUidRfid() {
@@ -42,14 +44,6 @@ public class Siswa {
         this.uidRfid = uidRfid;
     }
 
-    public String getNis() {
-        return nis;
-    }
-
-    public void setNis(String nis) {
-        this.nis = nis;
-    }
-
     public String getNamaLengkap() {
         return namaLengkap;
     }
@@ -58,12 +52,30 @@ public class Siswa {
         this.namaLengkap = namaLengkap;
     }
 
-    public String getKelas() {
-        return kelas;
+    public String getJurusanSiswa() {
+        return jurusanSiswa;
     }
 
-    public void setKelas(String kelas) {
-        this.kelas = kelas;
+    public void setJurusanSiswa(String jurusanSiswa) {
+        this.jurusanSiswa = jurusanSiswa;
     }
-        
+
+    public String getKelasSiswa() {
+        return kelasSiswa;
+    }
+
+    public void setKelasSiswa(String kelasSiswa) {
+        this.kelasSiswa = kelasSiswa;
+    }
+
+    @Override
+    public String toString() {
+        return "Siswa{"
+                + "idSiswa='" + idSiswa + '\''
+                + ", uidRfid='" + uidRfid + '\''
+                + ", namaLengkap='" + namaLengkap + '\''
+                + ", jurusanSiswa='" + jurusanSiswa + '\''
+                + ", kelasSiswa='" + kelasSiswa + '\''
+                + '}';
+    }
 }
