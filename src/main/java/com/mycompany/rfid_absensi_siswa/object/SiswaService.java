@@ -43,9 +43,9 @@ public class SiswaService {
 
     // READ ONE
     public Siswa cariSiswaByRFID(String uid) {
-    Bson filter = Filters.eq("uid_rfid", uid);
-    return siswaRepo.findOne(filter);
-}
+        Bson filter = Filters.eq("uid_rfid", uid);
+        return siswaRepo.findOne(filter);
+    }
 
     // UPDATE
     public void perbaruiKelas(String nis, String kelasBaru) {
@@ -54,16 +54,16 @@ public class SiswaService {
 
         if (siswa != null) {
             siswa.setKelas(kelasBaru);
-            siswaRepo.update(filter, siswa);
+
+            siswaRepo.update("nis", nis, siswa);
 
             System.out.println("Data kelas berhasil diperbarui.");
         }
     }
 
-    // DELETE
+// DELETE
     public void hapusSiswa(String nis) {
-        Bson filter = Filters.eq("nis", nis);
-        siswaRepo.delete(filter);
+        siswaRepo.delete("nis", nis);
 
         System.out.println("Data siswa berhasil dihapus.");
     }

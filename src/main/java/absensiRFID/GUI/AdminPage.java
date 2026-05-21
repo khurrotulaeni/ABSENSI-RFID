@@ -20,7 +20,7 @@ public class AdminPage extends javax.swing.JFrame {
      */
     public AdminPage() {
         initComponents();
-
+        refreshTable();
     }
 
     /**
@@ -292,6 +292,11 @@ public class AdminPage extends javax.swing.JFrame {
 
         btnEdit.setBackground(new java.awt.Color(255, 204, 51));
         btnEdit.setText("Update");
+        btnEdit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEditActionPerformed(evt);
+            }
+        });
         pInput.add(btnEdit, new org.netbeans.lib.awtextra.AbsoluteConstraints(890, 120, 120, 35));
 
         jButton3.setText("Refresh");
@@ -380,54 +385,54 @@ public class AdminPage extends javax.swing.JFrame {
 
     private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
 
-            // 1. Ambil data dari semua field input
-            String uid = txtUid.getText();  
-            String rfid = txtId.getText();
-            String nama = txtNama.getText();
-            String jurusan = pJurusan.getSelectedItem().toString();
-            String kelas = pKelas.getSelectedItem().toString();
+        // 1. Ambil data dari semua field input
+        String uid = txtUid.getText();
+        String rfid = txtId.getText();
+        String nama = txtNama.getText();
+        String jurusan = pJurusan.getSelectedItem().toString();
+        String kelas = pKelas.getSelectedItem().toString();
 
-            // Validasi: Jangan biarkan data kosong masuk ke DB
-            if (uid.isEmpty() || nama.isEmpty() || rfid.isEmpty()) {
-                JOptionPane.showMessageDialog(this, "UID dan Nama wajib diisi!");
-                return;
-            }
+        // Validasi: Jangan biarkan data kosong masuk ke DB
+        if (uid.isEmpty() || nama.isEmpty() || rfid.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "UID dan Nama wajib diisi!");
+            return;
+        }
 
-            /// 2. Proses Simpan
+        /// 2. Proses Simpan
            try {
-               String uri = "mongodb://localhost:27017";
-               try (com.mongodb.client.MongoClient mongoClient = com.mongodb.client.MongoClients.create(uri)) {
-                   com.mongodb.client.MongoDatabase database = mongoClient.getDatabase("Absensi");
-                   com.mongodb.client.MongoCollection<org.bson.Document> collection = database.getCollection("Siswa");
+            String uri = "mongodb://localhost:27017";
+            try (com.mongodb.client.MongoClient mongoClient = com.mongodb.client.MongoClients.create(uri)) {
+                com.mongodb.client.MongoDatabase database = mongoClient.getDatabase("Absensi");
+                com.mongodb.client.MongoCollection<org.bson.Document> collection = database.getCollection("Siswa");
 
-                   // 2. LOGIKA PENGONDISIAN (CEK DUPLIKASI)
-                   // Cari apakah idSiswa ATAU uidRfid sudah ada di database
-                   org.bson.Document cekId = collection.find(new org.bson.Document("idSiswa", uid)).first();
-                   org.bson.Document cekRfid = collection.find(new org.bson.Document("uidRfid", rfid)).first();
+                // 2. LOGIKA PENGONDISIAN (CEK DUPLIKASI)
+                // Cari apakah idSiswa ATAU uidRfid sudah ada di database
+                org.bson.Document cekId = collection.find(new org.bson.Document("idSiswa", uid)).first();
+                org.bson.Document cekRfid = collection.find(new org.bson.Document("uidRfid", rfid)).first();
 
-                   if (cekId != null) {
-                       JOptionPane.showMessageDialog(this, "Gagal! ID Siswa " + uid + " sudah terdaftar.", "Duplikasi Data", JOptionPane.WARNING_MESSAGE);
-                   } else if (cekRfid != null) {
-                       JOptionPane.showMessageDialog(this, "Gagal! Kartu RFID " + rfid + " sudah digunakan siswa lain.", "Duplikasi Data", JOptionPane.WARNING_MESSAGE);
-                   } else {
-                       // 3. Jika tidak ada duplikasi, baru jalankan simpan
-                       org.bson.Document doc = new org.bson.Document("idSiswa", uid)
-                               .append("namaLengkap", nama)
-                               .append("kelasSiswa", kelas)
-                               .append("jurusanSiswa", jurusan)
-                               .append("uidRfid", rfid);
+                if (cekId != null) {
+                    JOptionPane.showMessageDialog(this, "Gagal! ID Siswa " + uid + " sudah terdaftar.", "Duplikasi Data", JOptionPane.WARNING_MESSAGE);
+                } else if (cekRfid != null) {
+                    JOptionPane.showMessageDialog(this, "Gagal! Kartu RFID " + rfid + " sudah digunakan siswa lain.", "Duplikasi Data", JOptionPane.WARNING_MESSAGE);
+                } else {
+                    // 3. Jika tidak ada duplikasi, baru jalankan simpan
+                    org.bson.Document doc = new org.bson.Document("idSiswa", uid)
+                            .append("namaLengkap", nama)
+                            .append("kelasSiswa", kelas)
+                            .append("jurusanSiswa", jurusan)
+                            .append("uidRfid", rfid);
 
-                       collection.insertOne(doc);
-                       JOptionPane.showMessageDialog(this, "Data Siswa Berhasil Disimpan!");
+                    collection.insertOne(doc);
+                    JOptionPane.showMessageDialog(this, "Data Siswa Berhasil Disimpan!");
 
-                       refreshTable();
-                       resetForm();
-                   }
-               }
-           } catch (Exception e) {
-               JOptionPane.showMessageDialog(this, "Error: " + e.getMessage());
+                    refreshTable();
+                    resetForm();
+                }
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error: " + e.getMessage());
     }//GEN-LAST:event_btnSaveActionPerformed
-}
+    }
     private void txtUidActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtUidActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtUidActionPerformed
@@ -445,28 +450,30 @@ public class AdminPage extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
-       int column = jTable1.columnAtPoint(evt.getPoint());
-    int row = jTable1.getSelectedRow();
 
-    // Cek apakah yang diklik adalah kolom ACTION (indeks 4)
-    if (column == 4 && row != -1) {
-        
-        // Buat pilihan menu muncul (Edit atau Delete)
-        Object[] options = {"Edit", "Delete", "Batal"};
-        int choice = JOptionPane.showOptionDialog(this, 
-                "Pilih aksi untuk data: " + jTable1.getValueAt(row, 1), 
-                "Action Menu",
-                JOptionPane.DEFAULT_OPTION, 
-                JOptionPane.QUESTION_MESSAGE, 
-                null, options, options[0]);
+        int row = jTable1.getSelectedRow();
 
-        if (choice == 0) { // Jika pilih EDIT
-            aksiEdit(row);
-        } else if (choice == 1) { // Jika pilih DELETE
-            aksiDelete(row);
+        if (row!= -1) {
+
+            Object[] options = {"Edit", "Delete", "Batal"};
+            int choice = JOptionPane.showOptionDialog(this,
+                    "Pilih aksi untuk data: " + jTable1.getValueAt(row, 2),
+                    "Action Menu",
+                    JOptionPane.DEFAULT_OPTION,
+                    JOptionPane.QUESTION_MESSAGE,
+                    null, options, options[0]);
+
+            if (choice == 0) {
+                aksiEdit(row);
+            } else if (choice == 1) {
+                aksiDelete(row);
+            }
         }
-    }
     }//GEN-LAST:event_jTable1MouseClicked
+
+    private void btnEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditActionPerformed
+        finishUpdate();
+    }//GEN-LAST:event_btnEditActionPerformed
 
     /**
      * @param args the command line arguments
@@ -530,54 +537,111 @@ public class AdminPage extends javax.swing.JFrame {
     private javax.swing.JLabel txtSchool;
     private javax.swing.JTextField txtUid;
     // End of variables declaration//GEN-END:variables
+    private void finishUpdate() {
 
-        private void refreshTable() {
-            DefaultTableModel model = new DefaultTableModel();
-            model.addColumn("USERS ID");
-            model.addColumn("UID RFID");
-            model.addColumn("NAMA");
-            model.addColumn("JURUSAN");
-            model.addColumn("KELAS");
+    int row = jTable1.getSelectedRow();
+
+    if (row == -1) {
+        JOptionPane.showMessageDialog(this, "Pilih data terlebih dahulu!");
+        return;
+    }
 
     try {
-        com.mongodb.client.MongoClient mongoClient = com.mongodb.client.MongoClients.create("mongodb://localhost:27017");
-        com.mongodb.client.MongoDatabase database = mongoClient.getDatabase("Absensi");
-        com.mongodb.client.MongoCollection<org.bson.Document> collection = database.getCollection("Siswa");
 
-        for (org.bson.Document doc : collection.find()) {
-            model.addRow(new Object[]{
-                doc.get("idSiswa").toString(),
-                doc.getString("uidRfid"),      // Sesuaikan dengan nama field di Compass
-                doc.getString("namaLengkap"),
-                doc.getString("jurusanSiswa"),
-                doc.getString("kelasSiswa")
-            });
-        }
-        jTable1.setModel(model); // Pastikan nama variabel tabel kamu benar
+        // ambil ID lama dari tabel
+        String idLama = jTable1.getValueAt(row, 0).toString();
+
+        // ambil data terbaru dari form
+        String idSiswa = txtUid.getText();
+        String uidRfid = txtId.getText();
+        String nama = txtNama.getText();
+        String jurusan = pJurusan.getSelectedItem().toString();
+        String kelas = pKelas.getSelectedItem().toString();
+
+        // koneksi MongoDB
+        com.mongodb.client.MongoClient mongoClient =
+                com.mongodb.client.MongoClients.create("mongodb://localhost:27017");
+
+        com.mongodb.client.MongoDatabase database =
+                mongoClient.getDatabase("Absensi");
+
+        com.mongodb.client.MongoCollection<org.bson.Document> collection =
+                database.getCollection("Siswa");
+
+        // data baru
+        org.bson.Document updateData = new org.bson.Document("$set",
+                new org.bson.Document("idSiswa", idSiswa)
+                        .append("uidRfid", uidRfid)
+                        .append("namaLengkap", nama)
+                        .append("jurusanSiswa", jurusan)
+                        .append("kelasSiswa", kelas)
+        );
+
+        // proses update
+        collection.updateOne(
+                new org.bson.Document("idSiswa", idLama),
+                updateData
+        );
+
         mongoClient.close();
+
+        JOptionPane.showMessageDialog(this, "Data berhasil diupdate!");
+
+        refreshTable();
+        resetForm();
+
     } catch (Exception e) {
-        System.out.println("Error Refresh Tabel: " + e.getMessage());
+        JOptionPane.showMessageDialog(this,
+                "Gagal update: " + e.getMessage());
     }
+}
+    private void refreshTable() {
+        DefaultTableModel model = new DefaultTableModel();
+        model.addColumn("USERS ID");
+        model.addColumn("UID RFID");
+        model.addColumn("NAMA");
+        model.addColumn("JURUSAN");
+        model.addColumn("KELAS");
+
+        try {
+            com.mongodb.client.MongoClient mongoClient = com.mongodb.client.MongoClients.create("mongodb://localhost:27017");
+            com.mongodb.client.MongoDatabase database = mongoClient.getDatabase("Absensi");
+            com.mongodb.client.MongoCollection<org.bson.Document> collection = database.getCollection("Siswa");
+
+            for (org.bson.Document doc : collection.find()) {
+                model.addRow(new Object[]{
+                    doc.get("idSiswa").toString(),
+                    doc.getString("uidRfid"), // Sesuaikan dengan nama field di Compass
+                    doc.getString("namaLengkap"),
+                    doc.getString("jurusanSiswa"),
+                    doc.getString("kelasSiswa")
+                });
+            }
+            jTable1.setModel(model); // Pastikan nama variabel tabel kamu benar
+            mongoClient.close();
+        } catch (Exception e) {
+            System.out.println("Error Refresh Tabel: " + e.getMessage());
         }
+    }
 
     private void resetForm() {
-            txtUid.setText("");
-            txtId.setText("");
-            txtNama.setText("");
-            pJurusan.setSelectedIndex(0); // Kembali ke "Pilih Jurusan"
-            pKelas.setSelectedIndex(0);   // Kembali ke "Pilih Kelas"        }
+        txtUid.setText("");
+        txtId.setText("");
+        txtNama.setText("");
+        pJurusan.setSelectedIndex(0); // Kembali ke "Pilih Jurusan"
+        pKelas.setSelectedIndex(0);   // Kembali ke "Pilih Kelas"        }
     }
-    
+
     private void aksiEdit(int row) {
         try {
-            // Mengambil data dari tabel (urutan kolom: 0:ID, 1:UID, 2:Nama, 3:Jurusan, 4:Kelas)
-            String uidSiswa = jTable1.getValueAt(row, 1).toString();
+            String idSiswa = jTable1.getValueAt(row, 0).toString();
+            String uidRfid = jTable1.getValueAt(row, 1).toString();
             String nama = jTable1.getValueAt(row, 2).toString();
             String jurusan = jTable1.getValueAt(row, 3).toString();
             String kelas = jTable1.getValueAt(row, 4).toString();
 
-            // Set ke textfield agar bisa diedit
-            txtUid.setText(uidSiswa);
+            txtUid.setText(idSiswa);
+            txtId.setText(uidRfid);
             txtNama.setText(nama);
             pJurusan.setSelectedItem(jurusan);
             pKelas.setSelectedItem(kelas);
@@ -593,7 +657,7 @@ public class AdminPage extends javax.swing.JFrame {
         if (confirm == JOptionPane.YES_OPTION) {
             try {
                 String idSiswa = jTable1.getValueAt(row, 1).toString();
-                
+
                 com.mongodb.client.MongoClient mongoClient = com.mongodb.client.MongoClients.create("mongodb://localhost:27017");
                 com.mongodb.client.MongoDatabase database = mongoClient.getDatabase("Absensi");
                 com.mongodb.client.MongoCollection<org.bson.Document> collection = database.getCollection("Siswa");
@@ -607,6 +671,6 @@ public class AdminPage extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(this, "Gagal hapus: " + e.getMessage());
             }
         }
+
     }
 }
-    
