@@ -99,9 +99,9 @@ public class LogAbsenService {
     }
 
     // DELETE
+    // DELETE
     public void hapusLogByNIS(String nis) {
-        Bson filter = Filters.eq("nis", nis);
-        logRepo.delete(filter);
+        logRepo.delete("nis", nis);
 
         System.out.println("Log absensi siswa dengan NIS " + nis + " berhasil dihapus.");
     }
