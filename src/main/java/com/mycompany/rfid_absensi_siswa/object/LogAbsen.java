@@ -1,44 +1,34 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.mycompany.rfid_absensi_siswa.object;
 
-import java.time.LocalDateTime;
-
-/**
- *
- * @author titosukamenabung
- */
 public class LogAbsen {
 
-    private String nis;
+    private String idSiswa;
     private String namaLengkap;
-    private String kelas;
+    private String kelasSiswa;
     private String tanggal;
     private String waktu;
     private String status;
     private String uidRfid;
 
-    public LogAbsen(String nis, String namaLengkap, String kelas, String tanggal, String waktu, String status, String uidRfid) {
-        this.nis = nis;
+    public LogAbsen() {
+    }
+
+    public LogAbsen(String idSiswa, String namaLengkap, String kelasSiswa, String tanggal, String waktu, String status, String uidRfid) {
+        this.idSiswa = idSiswa;
         this.namaLengkap = namaLengkap;
-        this.kelas = kelas;
+        this.kelasSiswa = kelasSiswa;
         this.tanggal = tanggal;
         this.waktu = waktu;
         this.status = status;
         this.uidRfid = uidRfid;
     }
 
-    public LogAbsen() {
+    public String getIdSiswa() {
+        return idSiswa;
     }
 
-    public String getNis() {
-        return nis;
-    }
-
-    public void setNis(String nis) {
-        this.nis = nis;
+    public void setIdSiswa(String idSiswa) {
+        this.idSiswa = idSiswa;
     }
 
     public String getNamaLengkap() {
@@ -49,12 +39,12 @@ public class LogAbsen {
         this.namaLengkap = namaLengkap;
     }
 
-    public String getKelas() {
-        return kelas;
+    public String getKelasSiswa() {
+        return kelasSiswa;
     }
 
-    public void setKelas(String kelas) {
-        this.kelas = kelas;
+    public void setKelasSiswa(String kelasSiswa) {
+        this.kelasSiswa = kelasSiswa;
     }
 
     public String getTanggal() {
@@ -89,4 +79,16 @@ public class LogAbsen {
         this.uidRfid = uidRfid;
     }
 
+    @Override
+    public String toString() {
+        return "LogAbsen{"
+                + "idSiswa='" + idSiswa + '\''
+                + ", namaLengkap='" + namaLengkap + '\''
+                + ", kelasSiswa='" + kelasSiswa + '\''
+                + ", tanggal='" + tanggal + '\''
+                + ", waktu='" + waktu + '\''
+                + ", status='" + status + '\''
+                + ", uidRfid='" + uidRfid + '\''
+                + '}';
+    }
 }

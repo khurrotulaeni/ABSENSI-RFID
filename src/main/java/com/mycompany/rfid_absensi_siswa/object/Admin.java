@@ -1,36 +1,28 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.mycompany.rfid_absensi_siswa.object;
 
-/**
- *
- * @author titosukamenabung
- */
 public class Admin {
 
-    private String username;
+     private String email;
     private String password;
     private String namaLengkap;
     private String role;
 
     public Admin() {
-    }  
+    }
 
-    public Admin(String username, String password, String namaLengkap, String role) {
-        this.username = username;
+    public Admin(String email, String password, String namaLengkap, String role) {
+        this.email = email;
         this.password = password;
         this.namaLengkap = namaLengkap;
         this.role = role;
     }
 
-    public String getUsername() {
-        return username;
+    public String getEmail() {
+        return email;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getPassword() {
@@ -55,5 +47,14 @@ public class Admin {
 
     public void setRole(String role) {
         this.role = role;
+    }
+
+    @Override
+    public String toString() {
+        return "Admin{"
+                + "email='" + email + '\''
+                + ", namaLengkap='" + namaLengkap + '\''
+                + ", role='" + role + '\''
+                + '}';
     }
 }

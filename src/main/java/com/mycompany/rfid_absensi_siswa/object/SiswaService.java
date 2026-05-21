@@ -9,16 +9,12 @@ import com.mongodb.client.model.Filters;
 import java.util.List;
 import org.bson.conversions.Bson;
 
-/**
- *
- * @author titosukamenabung
- */
 public class SiswaService {
 
     private final GenericDAO<Siswa> siswaRepo;
 
     public SiswaService() {
-        this.siswaRepo = new GenericDAO<>("siswa", Siswa.class);
+        this.siswaRepo = new GenericDAO<>("Siswa", Siswa.class);
     }
 
     // CREATE
@@ -26,45 +22,58 @@ public class SiswaService {
         siswaRepo.save(siswaBaru);
     }
 
-    public void tambahSiswa(String uidRfid, String nis, String namaLengkap, String kelas) {
-        Siswa siswaBaru = new Siswa(uidRfid, nis, namaLengkap, kelas);
+    public void tambahSiswa(String idSiswa, String uidRfid, String namaLengkap, String jurusanSiswa, String kelasSiswa) {
+        Siswa siswaBaru = new Siswa(idSiswa, uidRfid, namaLengkap, jurusanSiswa, kelasSiswa);
         siswaRepo.save(siswaBaru);
     }
 
     // READ ALL
+    public List<Siswa> getAllSiswa() {
+        return siswaRepo.findAll();
+    }
+
     public void tampilkanDaftarSiswa() {
         List<Siswa> daftar = siswaRepo.findAll();
 
-        System.out.println("--- Daftar Siswa SMA ---");
+        System.out.println("--- Daftar Siswa ---");
         for (Siswa s : daftar) {
             System.out.println(s.toString());
         }
     }
 
-    // READ ONE
-    public Siswa cariSiswaByRFID(String uid) {
-        Bson filter = Filters.eq("uid_rfid", uid);
+    // READ ONE BY RFID
+    public Siswa cariSiswaByRFID(String uidRfid) {
+        Bson filter = Filters.eq("uidRfid", uidRfid);
+        return siswaRepo.findOne(filter);
+    }
+
+    // READ ONE BY ID
+    public Siswa cariSiswaById(String idSiswa) {
+        Bson filter = Filters.eq("idSiswa", idSiswa);
         return siswaRepo.findOne(filter);
     }
 
     // UPDATE
-    public void perbaruiKelas(String nis, String kelasBaru) {
-        Bson filter = Filters.eq("nis", nis);
-        Siswa siswa = siswaRepo.findOne(filter);
-
-        if (siswa != null) {
-            siswa.setKelas(kelasBaru);
-
-            siswaRepo.update("nis", nis, siswa);
-
-            System.out.println("Data kelas berhasil diperbarui.");
-        }
+    public void updateSiswa(String idLama, Siswa siswaBaru) {
+        siswaRepo.update("idSiswa", idLama, siswaBaru);
     }
 
-// DELETE
-    public void hapusSiswa(String nis) {
-        siswaRepo.delete("nis", nis);
+    public void updateSiswa(String idLama, String idSiswa, String uidRfid, String namaLengkap, String jurusanSiswa, String kelasSiswa) {
+        Siswa siswaBaru = new Siswa(idSiswa, uidRfid, namaLengkap, jurusanSiswa, kelasSiswa);
+        siswaRepo.update("idSiswa", idLama, siswaBaru);
+    }
 
-        System.out.println("Data siswa berhasil dihapus.");
+    // DELETE
+    public void hapusSiswa(String idSiswa) {
+        siswaRepo.delete("idSiswa", idSiswa);
+    }
+
+    // VALIDASI DUPLIKASI
+    public boolean cekIdSiswaAda(String idSiswa) {
+        return cariSiswaById(idSiswa) != null;
+    }
+
+    public boolean cekRfidAda(String uidRfid) {
+        return cariSiswaByRFID(uidRfid) != null;
     }
 }
