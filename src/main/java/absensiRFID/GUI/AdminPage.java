@@ -3,17 +3,13 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package absensiRFID.GUI;
-
-import absensiRFID.DAO.GenericDAO;
-import com.mycompany.rfid_absensi_siswa.object.SiswaService;
-import javax.swing.JOptionPane;
-import javax.swing.table.DefaultTableModel;
-import org.bson.Document;
+import absensiRFID.panel.SiswaPanel;
+import absensiRFID.panel.PenggunaPanel;
+import absensiRFID.panel.DashboardPanel;
 
 public class AdminPage extends javax.swing.JFrame {
     
-    // Ganti 'Siswa' dengan nama class model kamu jika beda
-    GenericDAO<Document> siswaDAO = new GenericDAO<>("Siswa", Document.class);  
+    // Ganti 'Siswa' dengan nama class model kamu jika beda 
 
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(AdminPage.class.getName());
 
@@ -23,20 +19,13 @@ public class AdminPage extends javax.swing.JFrame {
     public AdminPage() {
         initComponents();
         
-        // 1. Memanggil DashboardPage yang baru (JPanel)
-        DashboardPage dbPage = new DashboardPage();
-        
-        // 2. Masukkan ke dalam pContent (Wadah CardLayout)
-        // Note: pPendaftaran adalah panel bawaan NetBeans kamu
-        pContent.add(dbPage, "HalamanDashboard");
-        pContent.add(pPendaftaran, "HalamanPendaftaran");
-        
-        // 3. Tampilkan halaman pendaftaran pertama kali
-        java.awt.CardLayout cl = (java.awt.CardLayout) pContent.getLayout();
-        cl.show(pContent, "HalamanPendaftaran");
-        
-        // 4. Langsung panggil class SiswaService secara instan
-        new com.mycompany.rfid_absensi_siswa.object.SiswaService().tampilanSiswa(jTable1, "");
+        pContent.setLayout(new java.awt.BorderLayout());
+
+    // tampil dashboard pertama kali
+        pContent.removeAll();
+        pContent.add(new DashboardPanel(), java.awt.BorderLayout.CENTER);
+        pContent.revalidate();
+        pContent.repaint();
     }
 
     /**
@@ -53,41 +42,16 @@ public class AdminPage extends javax.swing.JFrame {
         iconBook = new javax.swing.JLabel();
         txtSchool = new javax.swing.JLabel();
         btnDashboard = new javax.swing.JButton();
-        btnDaftar = new javax.swing.JButton();
+        btnSiswa = new javax.swing.JButton();
         btnLapor = new javax.swing.JButton();
         btnLogout = new javax.swing.JButton();
+        btnPengguna = new javax.swing.JButton();
+        btnAttendance = new javax.swing.JButton();
         panelUtama = new javax.swing.JPanel();
-        pContent = new javax.swing.JPanel();
-        pPendaftaran = new javax.swing.JPanel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
-        pInput = new javax.swing.JPanel();
-        titleUid = new javax.swing.JLabel();
-        titleRfidId = new javax.swing.JLabel();
-        titleNama = new javax.swing.JLabel();
-        titleJurusan = new javax.swing.JLabel();
-        titleKelas = new javax.swing.JLabel();
-        panelUid = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
-        txtUid = new javax.swing.JTextField();
-        panelRfid = new javax.swing.JPanel();
-        txtId = new javax.swing.JTextField();
-        panelNama = new javax.swing.JPanel();
-        jLabel3 = new javax.swing.JLabel();
-        txtNama = new javax.swing.JTextField();
-        panelJurusan = new javax.swing.JPanel();
-        pJurusan = new javax.swing.JComboBox<>();
-        panelKelas = new javax.swing.JPanel();
-        pKelas = new javax.swing.JComboBox<>();
-        btnSave = new javax.swing.JButton();
-        btnEdit = new javax.swing.JButton();
-        btnRefresh = new javax.swing.JButton();
-        jPanel2 = new javax.swing.JPanel();
-        jLabel2 = new javax.swing.JLabel();
-        txtCari = new javax.swing.JTextField();
         pHeader = new javax.swing.JPanel();
         jDaftar = new javax.swing.JLabel();
         jSmart = new javax.swing.JLabel();
+        pContent = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
@@ -120,7 +84,7 @@ public class AdminPage extends javax.swing.JFrame {
         pIconLayout.setVerticalGroup(
             pIconLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pIconLayout.createSequentialGroup()
-                .addGap(0, 12, Short.MAX_VALUE)
+                .addGap(0, 33, Short.MAX_VALUE)
                 .addComponent(iconBook))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pIconLayout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -140,15 +104,15 @@ public class AdminPage extends javax.swing.JFrame {
             }
         });
 
-        btnDaftar.setBackground(new java.awt.Color(52, 73, 94));
-        btnDaftar.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        btnDaftar.setForeground(new java.awt.Color(255, 255, 255));
-        btnDaftar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/addUser.png"))); // NOI18N
-        btnDaftar.setText("PENDAFTARAN SISWA");
-        btnDaftar.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        btnDaftar.addActionListener(new java.awt.event.ActionListener() {
+        btnSiswa.setBackground(new java.awt.Color(52, 73, 94));
+        btnSiswa.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnSiswa.setForeground(new java.awt.Color(255, 255, 255));
+        btnSiswa.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/addUser.png"))); // NOI18N
+        btnSiswa.setText("DATA SISWA");
+        btnSiswa.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        btnSiswa.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnDaftarActionPerformed(evt);
+                btnSiswaActionPerformed(evt);
             }
         });
 
@@ -158,6 +122,11 @@ public class AdminPage extends javax.swing.JFrame {
         btnLapor.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/laporan.png"))); // NOI18N
         btnLapor.setText("LAPORAN");
         btnLapor.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        btnLapor.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLaporActionPerformed(evt);
+            }
+        });
 
         btnLogout.setBackground(new java.awt.Color(52, 73, 94));
         btnLogout.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
@@ -170,6 +139,30 @@ public class AdminPage extends javax.swing.JFrame {
             }
         });
 
+        btnPengguna.setBackground(new java.awt.Color(52, 73, 94));
+        btnPengguna.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnPengguna.setForeground(new java.awt.Color(255, 255, 255));
+        btnPengguna.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/pengguna.png"))); // NOI18N
+        btnPengguna.setText("DATA PENGGUNA");
+        btnPengguna.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        btnPengguna.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnPenggunaActionPerformed(evt);
+            }
+        });
+
+        btnAttendance.setBackground(new java.awt.Color(52, 73, 94));
+        btnAttendance.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnAttendance.setForeground(new java.awt.Color(255, 255, 255));
+        btnAttendance.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/pengguna.png"))); // NOI18N
+        btnAttendance.setText("ATTENDANCE");
+        btnAttendance.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        btnAttendance.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAttendanceActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -177,26 +170,33 @@ public class AdminPage extends javax.swing.JFrame {
             .addComponent(pIcon, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(19, 19, 19)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(btnDashboard, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnDaftar, javax.swing.GroupLayout.DEFAULT_SIZE, 212, Short.MAX_VALUE)
-                    .addComponent(btnLapor, javax.swing.GroupLayout.DEFAULT_SIZE, 212, Short.MAX_VALUE)
-                    .addComponent(btnLogout, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnPengguna, javax.swing.GroupLayout.PREFERRED_SIZE, 212, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnAttendance, javax.swing.GroupLayout.PREFERRED_SIZE, 212, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(btnDashboard, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnSiswa, javax.swing.GroupLayout.DEFAULT_SIZE, 212, Short.MAX_VALUE)
+                        .addComponent(btnLapor, javax.swing.GroupLayout.DEFAULT_SIZE, 212, Short.MAX_VALUE)
+                        .addComponent(btnLogout, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addContainerGap(19, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addComponent(pIcon, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(53, 53, 53)
-                .addComponent(btnDashboard, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(33, 33, 33)
-                .addComponent(btnDaftar, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(33, 33, 33)
-                .addComponent(btnLapor, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 359, Short.MAX_VALUE)
+                .addGap(32, 32, 32)
+                .addComponent(btnDashboard, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(btnSiswa, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(btnPengguna, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(btnAttendance, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(btnLapor, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 185, Short.MAX_VALUE)
                 .addComponent(btnLogout, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(71, 71, 71))
+                .addGap(89, 89, 89))
         );
 
         getContentPane().add(jPanel1, java.awt.BorderLayout.WEST);
@@ -204,209 +204,7 @@ public class AdminPage extends javax.swing.JFrame {
         panelUtama.setBackground(new java.awt.Color(255, 255, 255));
         panelUtama.setLayout(new java.awt.BorderLayout());
 
-        pContent.setBorder(javax.swing.BorderFactory.createEmptyBorder(20, 30, 10, 30));
-        pContent.setPreferredSize(new java.awt.Dimension(250, 300));
-        pContent.setLayout(new java.awt.CardLayout());
-
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null}
-            },
-            new String [] {
-                "USERS ID", "UID RFID", "NAMA", "JURUSAN", "KELAS"
-            }
-        ));
-        jTable1.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_ALL_COLUMNS);
-        jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jTable1MouseClicked(evt);
-            }
-        });
-        jScrollPane1.setViewportView(jTable1);
-
-        pInput.setBackground(new java.awt.Color(255, 255, 255));
-        pInput.setBorder(javax.swing.BorderFactory.createTitledBorder("Data Pendaftaran Siswa"));
-        pInput.setPreferredSize(new java.awt.Dimension(250, 300));
-        pInput.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        titleUid.setBackground(new java.awt.Color(255, 255, 255));
-        titleUid.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        titleUid.setText("USER ID");
-        pInput.add(titleUid, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 50, 100, 20));
-
-        titleRfidId.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        titleRfidId.setText("UID RFID");
-        titleRfidId.setPreferredSize(new java.awt.Dimension(220, 35));
-        pInput.add(titleRfidId, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 50, 100, 20));
-
-        titleNama.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        titleNama.setText("NAMA");
-        titleNama.setMaximumSize(new java.awt.Dimension(24, 20));
-        titleNama.setMinimumSize(new java.awt.Dimension(24, 20));
-        pInput.add(titleNama, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 50, 100, 20));
-
-        titleJurusan.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        titleJurusan.setText("JURUSAN");
-        pInput.add(titleJurusan, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 140, -1, -1));
-
-        titleKelas.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        titleKelas.setText("KELAS");
-        pInput.add(titleKelas, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 140, -1, -1));
-
-        panelUid.setBackground(new java.awt.Color(255, 255, 255));
-        panelUid.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(204, 204, 204)));
-        panelUid.setLayout(new java.awt.BorderLayout());
-
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/uid.png"))); // NOI18N
-        jLabel1.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 10, 1, 1));
-        panelUid.add(jLabel1, java.awt.BorderLayout.WEST);
-
-        txtUid.setBorder(null);
-        txtUid.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtUidActionPerformed(evt);
-            }
-        });
-        panelUid.add(txtUid, java.awt.BorderLayout.CENTER);
-
-        pInput.add(panelUid, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 80, 220, 40));
-
-        panelRfid.setBackground(new java.awt.Color(255, 255, 255));
-        panelRfid.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(204, 204, 204)));
-        panelRfid.setPreferredSize(new java.awt.Dimension(220, 35));
-        panelRfid.setLayout(new java.awt.BorderLayout());
-
-        txtId.setBorder(null);
-        txtId.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtIdActionPerformed(evt);
-            }
-        });
-        panelRfid.add(txtId, java.awt.BorderLayout.CENTER);
-
-        pInput.add(panelRfid, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 80, 220, 40));
-
-        panelNama.setBackground(new java.awt.Color(255, 255, 255));
-        panelNama.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(204, 204, 204)));
-        panelNama.setPreferredSize(new java.awt.Dimension(300, 40));
-        panelNama.setLayout(new java.awt.BorderLayout());
-
-        jLabel3.setBackground(new java.awt.Color(255, 255, 255));
-        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/nama.png"))); // NOI18N
-        jLabel3.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 10, 1, 1));
-        panelNama.add(jLabel3, java.awt.BorderLayout.LINE_START);
-
-        txtNama.setBorder(null);
-        txtNama.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtNamaActionPerformed(evt);
-            }
-        });
-        panelNama.add(txtNama, java.awt.BorderLayout.CENTER);
-
-        pInput.add(panelNama, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 80, 250, 40));
-
-        panelJurusan.setBackground(new java.awt.Color(255, 255, 255));
-        panelJurusan.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
-        panelJurusan.setPreferredSize(new java.awt.Dimension(220, 40));
-        panelJurusan.setLayout(new java.awt.BorderLayout());
-
-        pJurusan.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Pilih Jurusan", "MIPA", "IPS", "BAHASA DAN BUDAYA" }));
-        pJurusan.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(204, 204, 204), 1, true));
-        pJurusan.setFocusable(false);
-        pJurusan.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                pJurusanActionPerformed(evt);
-            }
-        });
-        panelJurusan.add(pJurusan, java.awt.BorderLayout.CENTER);
-
-        pInput.add(panelJurusan, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 170, 220, 40));
-
-        panelKelas.setBackground(new java.awt.Color(255, 255, 255));
-        panelKelas.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
-        panelKelas.setLayout(new java.awt.BorderLayout());
-
-        pKelas.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Pilih Kelas", "X", "XI", "XII" }));
-        pKelas.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                pKelasActionPerformed(evt);
-            }
-        });
-        panelKelas.add(pKelas, java.awt.BorderLayout.CENTER);
-
-        pInput.add(panelKelas, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 170, 220, 40));
-
-        btnSave.setBackground(new java.awt.Color(102, 255, 102));
-        btnSave.setText("Save");
-        btnSave.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnSaveActionPerformed(evt);
-            }
-        });
-        pInput.add(btnSave, new org.netbeans.lib.awtextra.AbsoluteConstraints(890, 80, 120, 35));
-
-        btnEdit.setBackground(new java.awt.Color(255, 204, 51));
-        btnEdit.setText("Update");
-        btnEdit.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnEditActionPerformed(evt);
-            }
-        });
-        pInput.add(btnEdit, new org.netbeans.lib.awtextra.AbsoluteConstraints(890, 120, 120, 35));
-
-        btnRefresh.setText("Refresh");
-        btnRefresh.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnRefreshActionPerformed(evt);
-            }
-        });
-        pInput.add(btnRefresh, new org.netbeans.lib.awtextra.AbsoluteConstraints(890, 160, 120, 35));
-
-        jPanel2.setBackground(new java.awt.Color(255, 255, 255));
-        jPanel2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(204, 204, 204)));
-        jPanel2.setLayout(new java.awt.BorderLayout());
-
-        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/search.png"))); // NOI18N
-        jPanel2.add(jLabel2, java.awt.BorderLayout.LINE_START);
-
-        txtCari.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtCariActionPerformed(evt);
-            }
-        });
-        jPanel2.add(txtCari, java.awt.BorderLayout.CENTER);
-
-        pInput.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(800, 240, 250, 40));
-
-        javax.swing.GroupLayout pPendaftaranLayout = new javax.swing.GroupLayout(pPendaftaran);
-        pPendaftaran.setLayout(pPendaftaranLayout);
-        pPendaftaranLayout.setHorizontalGroup(
-            pPendaftaranLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pPendaftaranLayout.createSequentialGroup()
-                .addGroup(pPendaftaranLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(pInput, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 1068, Short.MAX_VALUE))
-                .addContainerGap(29, Short.MAX_VALUE))
-        );
-        pPendaftaranLayout.setVerticalGroup(
-            pPendaftaranLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pPendaftaranLayout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(pInput, javax.swing.GroupLayout.PREFERRED_SIZE, 308, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 436, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
-        );
-
-        pContent.add(pPendaftaran, "card2");
-
-        panelUtama.add(pContent, java.awt.BorderLayout.CENTER);
-
-        pHeader.setBackground(new java.awt.Color(52, 73, 94));
+        pHeader.setBackground(new java.awt.Color(44, 62, 80));
 
         jDaftar.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         jDaftar.setForeground(new java.awt.Color(255, 255, 255));
@@ -422,185 +220,71 @@ public class AdminPage extends javax.swing.JFrame {
         pHeaderLayout.setHorizontalGroup(
             pHeaderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pHeaderLayout.createSequentialGroup()
-                .addGap(30, 30, 30)
+                .addContainerGap()
                 .addGroup(pHeaderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jDaftar, javax.swing.GroupLayout.PREFERRED_SIZE, 403, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jSmart, javax.swing.GroupLayout.PREFERRED_SIZE, 257, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(724, Short.MAX_VALUE))
+                    .addComponent(jDaftar)
+                    .addComponent(jSmart))
+                .addContainerGap(835, Short.MAX_VALUE))
         );
         pHeaderLayout.setVerticalGroup(
             pHeaderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pHeaderLayout.createSequentialGroup()
-                .addGap(17, 17, 17)
-                .addComponent(jDaftar, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pHeaderLayout.createSequentialGroup()
+                .addContainerGap(52, Short.MAX_VALUE)
+                .addComponent(jDaftar)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jSmart, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(15, Short.MAX_VALUE))
+                .addComponent(jSmart)
+                .addContainerGap())
         );
 
-        panelUtama.add(pHeader, java.awt.BorderLayout.NORTH);
+        panelUtama.add(pHeader, java.awt.BorderLayout.PAGE_START);
+
+        pContent.setLayout(new java.awt.BorderLayout());
+        panelUtama.add(pContent, java.awt.BorderLayout.CENTER);
 
         getContentPane().add(panelUtama, java.awt.BorderLayout.CENTER);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnDaftarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDaftarActionPerformed
-        java.awt.CardLayout cl = (java.awt.CardLayout) pContent.getLayout();
-        cl.show(pContent, "HalamanPendaftaran");
-    }//GEN-LAST:event_btnDaftarActionPerformed
+    private void btnSiswaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSiswaActionPerformed
+        pContent.removeAll();
+        pContent.add(new SiswaPanel(), java.awt.BorderLayout.CENTER);
+        pContent.revalidate();
+        pContent.repaint();
 
-    private void txtNamaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNamaActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtNamaActionPerformed
-
-    private void txtIdActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtIdActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtIdActionPerformed
-
-    private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
-
-            // 1. Ambil data dari semua field input
-            String uid = txtUid.getText();  
-            String rfid = txtId.getText();
-            String nama = txtNama.getText();
-            String jurusan = pJurusan.getSelectedItem().toString();
-            String kelas = pKelas.getSelectedItem().toString();
-            showData("");
-
-            // Validasi: Jangan biarkan data kosong masuk ke DB
-            if (uid.isEmpty() || nama.isEmpty() || rfid.isEmpty()) {
-                JOptionPane.showMessageDialog(this, "UID dan Nama wajib diisi!");
-                return;
-            }
-
-            /// 2. Proses Simpan
-           try {
-               String uri = "mongodb://localhost:27017";
-               try (com.mongodb.client.MongoClient mongoClient = com.mongodb.client.MongoClients.create(uri)) {
-                   com.mongodb.client.MongoDatabase database = mongoClient.getDatabase("Absensi");
-                   com.mongodb.client.MongoCollection<org.bson.Document> collection = database.getCollection("Siswa");
-
-                   // 2. LOGIKA PENGONDISIAN (CEK DUPLIKASI)
-                   // Cari apakah idSiswa ATAU uidRfid sudah ada di database
-                   org.bson.Document cekId = collection.find(new org.bson.Document("idSiswa", uid)).first();
-                   org.bson.Document cekRfid = collection.find(new org.bson.Document("uidRfid", rfid)).first();
-
-                   if (cekId != null) {
-                       JOptionPane.showMessageDialog(this, "Gagal! ID Siswa " + uid + " sudah terdaftar.", "Duplikasi Data", JOptionPane.WARNING_MESSAGE);
-                   } else if (cekRfid != null) {
-                       JOptionPane.showMessageDialog(this, "Gagal! Kartu RFID " + rfid + " sudah digunakan siswa lain.", "Duplikasi Data", JOptionPane.WARNING_MESSAGE);
-                   } else {
-                       // 3. Jika tidak ada duplikasi, baru jalankan simpan
-                       org.bson.Document doc = new org.bson.Document("idSiswa", uid)
-                               .append("namaLengkap", nama)
-                               .append("kelasSiswa", kelas)
-                               .append("jurusanSiswa", jurusan)
-                               .append("uidRfid", rfid);
-
-                       collection.insertOne(doc);
-                       JOptionPane.showMessageDialog(this, "Data Siswa Berhasil Disimpan!");
-
-                       refreshTable();
-                       resetForm();
-                   }
-               }
-           } catch (Exception e) {
-               JOptionPane.showMessageDialog(this, "Error: " + e.getMessage());
-    }//GEN-LAST:event_btnSaveActionPerformed
-}
-    private void txtUidActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtUidActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtUidActionPerformed
-
-    private void pJurusanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pJurusanActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_pJurusanActionPerformed
-
-    private void pKelasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pKelasActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_pKelasActionPerformed
-
-    private void btnRefreshActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRefreshActionPerformed
-        refreshTable();
-    }//GEN-LAST:event_btnRefreshActionPerformed
-
-    private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
-       int column = jTable1.columnAtPoint(evt.getPoint());
-    int row = jTable1.getSelectedRow();
-
-    // Cek apakah yang diklik adalah kolom ACTION (indeks 4)
-    if (row != -1) {
-        // Buat pilihan menu muncul (Edit atau Delete)
-        Object[] options = {"Edit", "Delete", "Batal"};
-        int choice = JOptionPane.showOptionDialog(this, 
-                "Pilih aksi untuk data: " + jTable1.getValueAt(row, 1), 
-                "Action Menu",
-                JOptionPane.DEFAULT_OPTION, 
-                JOptionPane.QUESTION_MESSAGE, 
-                null, options, options[0]);
-
-        if (choice == 0) { // Jika pilih EDIT
-            aksiEdit(row);
-        } else if (choice == 1) { // Jika pilih DELETE
-            aksiDelete(row);
-        }
-    }
-    }//GEN-LAST:event_jTable1MouseClicked
-
-    private void btnEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditActionPerformed
-     try {
-        // 1. Ambil data TERBARU yang sudah kamu ketik di kotak input
-        String idSiswa = txtUid.getText(); // ID sebagai kunci
-        String rfid = txtId.getText();
-        String nama = txtNama.getText();
-        String jurusan = pJurusan.getSelectedItem().toString();
-        String kelas = pKelas.getSelectedItem().toString();
-
-        // Validasi simpel: pastikan ID tidak kosong
-        if (idSiswa.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Pilih data di tabel dulu!");
-            return;
-        }
-
-        // 2. Bungkus data baru tersebut ke dalam Document
-        org.bson.Document dataBaru = new org.bson.Document("idSiswa", idSiswa)
-                .append("namaLengkap", nama)
-                .append("kelasSiswa", kelas)
-                .append("jurusanSiswa", jurusan)
-                .append("uidRfid", rfid);
-
-        // 3. SURUH DAO UNTUK UPDATE KE MONGODB
-        // Cari yang "idSiswa"-nya sama, lalu timpa dengan dataBaru
-        siswaDAO.update("idSiswa", idSiswa, dataBaru);
-
-        // 4. Beri tahu user kalau berhasil
-        JOptionPane.showMessageDialog(this, "Berhasil Update data: " + nama);
-
-        // 5. Segarkan tampilan tabel agar nama baru muncul
-        refreshTable();
-        resetForm();
-
-    } catch (Exception e) {
-        JOptionPane.showMessageDialog(this, "Error saat update: " + e.getMessage());
-    }
-    }//GEN-LAST:event_btnEditActionPerformed
-
-    private void txtCariActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCariActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtCariActionPerformed
+        jDaftar.setText("DATA SISWA");
+    }//GEN-LAST:event_btnSiswaActionPerformed
 
     private void btnDashboardActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDashboardActionPerformed
-        java.awt.CardLayout cl = (java.awt.CardLayout) pContent.getLayout();
-        cl.show(pContent, "HalamanDashboard");
+        pContent.removeAll();
+        pContent.add(new DashboardPanel(), java.awt.BorderLayout.CENTER);
+        pContent.revalidate();
+        pContent.repaint();
+
+        jDaftar.setText("DASHBOARD");
     }//GEN-LAST:event_btnDashboardActionPerformed
 
     private void btnLogoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLogoutActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_btnLogoutActionPerformed
-    private void txtCariKeyReleased(java.awt.event.KeyEvent evt) {                                    
-        showData(txtCari.getText());
-    }                   
+
+    private void btnAttendanceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAttendanceActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnAttendanceActionPerformed
+
+    private void btnLaporActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLaporActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnLaporActionPerformed
+
+    private void btnPenggunaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPenggunaActionPerformed
+            pContent.removeAll();
+            pContent.add(new PenggunaPanel(), java.awt.BorderLayout.CENTER);
+            pContent.revalidate();
+            pContent.repaint();
+
+            jDaftar.setText("DATA PENGGUNA");
+    }//GEN-LAST:event_btnPenggunaActionPerformed
+            
     /**
      * @param args the command line arguments
      */
@@ -610,131 +294,21 @@ public class AdminPage extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnDaftar;
+    private javax.swing.JButton btnAttendance;
     private javax.swing.JButton btnDashboard;
-    private javax.swing.JButton btnEdit;
     private javax.swing.JButton btnLapor;
     private javax.swing.JButton btnLogout;
-    private javax.swing.JButton btnRefresh;
-    private javax.swing.JButton btnSave;
+    private javax.swing.JButton btnPengguna;
+    private javax.swing.JButton btnSiswa;
     private javax.swing.JLabel iconBook;
     private javax.swing.JLabel jDaftar;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
-    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel jSmart;
-    private javax.swing.JTable jTable1;
     private javax.swing.JPanel pContent;
     private javax.swing.JPanel pHeader;
     private javax.swing.JPanel pIcon;
-    private javax.swing.JPanel pInput;
-    private javax.swing.JComboBox<String> pJurusan;
-    private javax.swing.JComboBox<String> pKelas;
-    private javax.swing.JPanel pPendaftaran;
-    private javax.swing.JPanel panelJurusan;
-    private javax.swing.JPanel panelKelas;
-    private javax.swing.JPanel panelNama;
-    private javax.swing.JPanel panelRfid;
-    private javax.swing.JPanel panelUid;
     private javax.swing.JPanel panelUtama;
-    private javax.swing.JLabel titleJurusan;
-    private javax.swing.JLabel titleKelas;
-    private javax.swing.JLabel titleNama;
-    private javax.swing.JLabel titleRfidId;
-    private javax.swing.JLabel titleUid;
-    private javax.swing.JTextField txtCari;
-    private javax.swing.JTextField txtId;
-    private javax.swing.JTextField txtNama;
     private javax.swing.JLabel txtSchool;
-    private javax.swing.JTextField txtUid;
     // End of variables declaration//GEN-END:variables
-
-        private void refreshTable() {
-            DefaultTableModel model = new DefaultTableModel();
-            model.addColumn("USERS ID");
-            model.addColumn("UID RFID");
-            model.addColumn("NAMA");
-            model.addColumn("JURUSAN");
-            model.addColumn("KELAS");
-
-    try {
-        com.mongodb.client.MongoClient mongoClient = com.mongodb.client.MongoClients.create("mongodb://localhost:27017");
-        com.mongodb.client.MongoDatabase database = mongoClient.getDatabase("Absensi");
-        com.mongodb.client.MongoCollection<org.bson.Document> collection = database.getCollection("Siswa");
-
-        for (org.bson.Document doc : collection.find()) {
-            model.addRow(new Object[]{
-                doc.get("idSiswa").toString(),
-                doc.getString("uidRfid"),      // Sesuaikan dengan nama field di Compass
-                doc.getString("namaLengkap"),
-                doc.getString("jurusanSiswa"),
-                doc.getString("kelasSiswa")
-            });
-        }
-        jTable1.setModel(model); // Pastikan nama variabel tabel benar
-        mongoClient.close();
-    } catch (Exception e) {
-        System.out.println("Error Refresh Tabel: " + e.getMessage());
-    }
-        }
-
-    private void resetForm() {
-            txtUid.setText("");
-            txtId.setText("");
-            txtNama.setText("");
-            pJurusan.setSelectedIndex(0); // Kembali ke "Pilih Jurusan"
-            pKelas.setSelectedIndex(0);   // Kembali ke "Pilih Kelas"        }
-    }
-    
-    private void aksiEdit(int row) {
-        try {
-            // Mengambil data dari tabel (urutan kolom: 0:ID, 1:UID, 2:Nama, 3:Jurusan, 4:Kelas)
-            String uidSiswa = jTable1.getValueAt(row, 0).toString();
-            String uidRfid = jTable1.getValueAt(row, 1).toString();
-            String nama = jTable1.getValueAt(row, 2).toString();
-            String jurusan = jTable1.getValueAt(row, 3).toString();
-            String kelas = jTable1.getValueAt(row, 4).toString();
-
-            // Set ke textfield agar bisa diedit
-            txtUid.setText(uidSiswa);
-            txtId.setText(uidRfid);
-            txtNama.setText(nama);
-            pJurusan.setSelectedItem(jurusan);
-            pKelas.setSelectedItem(kelas);
-
-            JOptionPane.showMessageDialog(this, "Data dipilih. Silakan ubah lalu klik Update.");
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, "Gagal ambil data: " + e.getMessage());
-        }
-    }
-
-    private void aksiDelete(int row) {
-        int confirm = JOptionPane.showConfirmDialog(this, "Yakin hapus data ini?", "Hapus", JOptionPane.YES_NO_OPTION);
-        if (confirm == JOptionPane.YES_OPTION) {
-            try {
-                String idSiswa = jTable1.getValueAt(row, 1).toString();
-                
-                com.mongodb.client.MongoClient mongoClient = com.mongodb.client.MongoClients.create("mongodb://localhost:27017");
-                com.mongodb.client.MongoDatabase database = mongoClient.getDatabase("Absensi");
-                com.mongodb.client.MongoCollection<org.bson.Document> collection = database.getCollection("Siswa");
-
-                collection.deleteOne(new org.bson.Document("idSiswa", idSiswa));
-                mongoClient.close();
-
-                JOptionPane.showMessageDialog(this, "Berhasil dihapus!");
-                refreshTable();
-            } catch (Exception e) {
-                JOptionPane.showMessageDialog(this, "Gagal hapus: " + e.getMessage());
-            }
-        }
-    }
-
-    private void showData(String key) {
-        SiswaService S = new SiswaService();
-        S.tampilanSiswa(jTable1, key);
-    }
 }
-    
+

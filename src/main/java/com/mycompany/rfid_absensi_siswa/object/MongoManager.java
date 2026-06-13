@@ -9,24 +9,32 @@ import org.bson.codecs.configuration.CodecRegistry;
 import org.bson.codecs.pojo.PojoCodecProvider;
 
 public class MongoManager {
+
     private static MongoClient mongoClient;
-    private static MongoDatabase database; // Tambahkan variabel database statis
     private static final String DATABASE_NAME = "Absensi";
 
-    public static MongoDatabase getDatabase() {
-        if (mongoClient == null) {
-            // Konfigurasi CodecRegistry untuk pemetaan POJO otomatis (Standard Industry)
-            CodecRegistry pojoCodecRegistry = CodecRegistries.fromRegistries(
-                MongoClientSettings.getDefaultCodecRegistry(),
-                CodecRegistries.fromProviders(PojoCodecProvider.builder().automatic(true).build())
+    // GLOBAL POJO REGISTRY
+    private static final CodecRegistry pojoCodecRegistry =
+            CodecRegistries.fromRegistries(
+                    MongoClientSettings.getDefaultCodecRegistry(),
+                    CodecRegistries.fromProviders(
+                            PojoCodecProvider.builder()
+                                    .automatic(true)
+                                    .build()
+                            )
             );
 
-            // Inisiasi koneksi ke MongoDB Localhost (Driver 5.0.0)
-            mongoClient = MongoClients.create("mongodb://localhost:27017");
-            
-            // Mengembalikan database dengan registry yang sudah dikonfigurasi
-            database = mongoClient.getDatabase(DATABASE_NAME).withCodecRegistry(pojoCodecRegistry);
+    public static MongoDatabase getDatabase() {
+
+        if (mongoClient == null) {
+
+            mongoClient = MongoClients.create(
+                    "mongodb://localhost:27017"
+            );
         }
-        return database;
+        // SELALU return dengan codec registry
+        return mongoClient
+                .getDatabase(DATABASE_NAME)
+                .withCodecRegistry(pojoCodecRegistry);
     }
 }

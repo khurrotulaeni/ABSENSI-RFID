@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.mycompany.rfid_absensi_siswa.object;
 
 import absensiRFID.DAO.GenericDAO;
@@ -12,10 +8,6 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 import org.bson.conversions.Bson;
 
-/**
- *
- * @author ADVAN
- */
 public class LogAbsenService {
 
     private final GenericDAO<LogAbsen> logRepo;
@@ -29,7 +21,6 @@ public class LogAbsenService {
     // CREATE - Catat absensi otomatis dari RFID
     public void catatAbsensi(String uidRfid) {
 
-        // Cari siswa berdasarkan UID RFID
         Siswa siswa = siswaService.cariSiswaByRFID(uidRfid);
 
         if (siswa == null) {
@@ -37,23 +28,20 @@ public class LogAbsenService {
             return;
         }
 
-        // Format tanggal & waktu
         String tanggal = LocalDate.now().toString();
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
         String waktu = LocalTime.now().format(formatter) + " WIB";
 
-        // Cek apakah siswa sudah absen hari ini
-        if (sudahAbsenHariIni(siswa.getNis(), tanggal)) {
+        if (sudahAbsenHariIni(siswa.getIdSiswa(), tanggal)) {
             System.out.println("Siswa sudah melakukan absensi hari ini.");
             return;
         }
 
-        // Simpan log absensi baru
         LogAbsen logBaru = new LogAbsen(
-                siswa.getNis(),
+                siswa.getIdSiswa(),
                 siswa.getNamaLengkap(),
-                siswa.getKelas(),
+                siswa.getKelasSiswa(),
                 tanggal,
                 waktu,
                 "HADIR",
@@ -66,16 +54,20 @@ public class LogAbsenService {
     }
 
     // READ - Cek apakah siswa sudah absen hari ini
-    public boolean sudahAbsenHariIni(String nis, String tanggal) {
+    public boolean sudahAbsenHariIni(String idSiswa, String tanggal) {
         Bson filter = Filters.and(
-                Filters.eq("nis", nis),
+                Filters.eq("idSiswa", idSiswa),
                 Filters.eq("tanggal", tanggal)
         );
 
         return logRepo.findOne(filter) != null;
     }
 
-    // READ ALL - Tampilkan semua log absensi
+    // READ ALL
+    public List<LogAbsen> getAllLog() {
+        return logRepo.findAll();
+    }
+
     public void tampilkanSemuaLog() {
         List<LogAbsen> daftarLog = logRepo.findAll();
 
@@ -85,23 +77,23 @@ public class LogAbsenService {
         }
     }
 
-    // READ BY NIS
-    public void tampilkanLogByNIS(String nis) {
+    // READ BY ID SISWA
+    public void tampilkanLogByIdSiswa(String idSiswa) {
         List<LogAbsen> daftarLog = logRepo.findAll();
 
-        System.out.println("===== LOG ABSENSI NIS: " + nis + " =====");
+        System.out.println("===== LOG ABSENSI ID SISWA: " + idSiswa + " =====");
 
         for (LogAbsen log : daftarLog) {
-            if (log.getNis().equals(nis)) {
+            if (log.getIdSiswa().equals(idSiswa)) {
                 System.out.println(log.toString());
             }
         }
     }
 
     // DELETE
-    public void hapusLogByNIS(String idSiswa) {
+    public void hapusLogByIdSiswa(String idSiswa) {
         logRepo.delete("idSiswa", idSiswa);
 
-        System.out.println("Log absensi siswa dengan NIS " + idSiswa + " berhasil dihapus.");
+        System.out.println("Log absensi siswa dengan ID " + idSiswa + " berhasil dihapus.");
     }
 }
