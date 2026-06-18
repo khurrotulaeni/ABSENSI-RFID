@@ -224,7 +224,7 @@ public class AdminPage extends javax.swing.JFrame {
                 .addGroup(pHeaderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jDaftar)
                     .addComponent(jSmart))
-                .addContainerGap(835, Short.MAX_VALUE))
+                .addContainerGap(839, Short.MAX_VALUE))
         );
         pHeaderLayout.setVerticalGroup(
             pHeaderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
