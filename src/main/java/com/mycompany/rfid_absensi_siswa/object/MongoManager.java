@@ -23,7 +23,8 @@ public class MongoManager {
                                     .automatic(true)
                                     .build()
                     )
-            );
+                    
+                    );
 
     public static MongoDatabase getDatabase() {
 
