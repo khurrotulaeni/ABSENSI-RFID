@@ -7,10 +7,23 @@ import absensiRFID.panel.SiswaPanel;
 import absensiRFID.panel.PenggunaPanel;
 import absensiRFID.panel.DashboardPanel;
 
+
+import com.mycompany.rfid_absensi_siswa.object.Siswa;
+import com.mycompany.rfid_absensi_siswa.object.SiswaService;
+import java.util.List;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+
+/**
+ *
+ * @author organizer
+ */
+
 public class AdminPage extends javax.swing.JFrame {
     
     // Ganti 'Siswa' dengan nama class model kamu jika beda 
 
+    private final SiswaService siswaService = new SiswaService();
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(AdminPage.class.getName());
 
     /**
@@ -18,7 +31,7 @@ public class AdminPage extends javax.swing.JFrame {
      */
     public AdminPage() {
         initComponents();
-        
+
         pContent.setLayout(new java.awt.BorderLayout());
 
     // tampil dashboard pertama kali
@@ -84,7 +97,7 @@ public class AdminPage extends javax.swing.JFrame {
         pIconLayout.setVerticalGroup(
             pIconLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pIconLayout.createSequentialGroup()
-                .addGap(0, 33, Short.MAX_VALUE)
+                .addGap(0, 28, Short.MAX_VALUE)
                 .addComponent(iconBook))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pIconLayout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -154,7 +167,7 @@ public class AdminPage extends javax.swing.JFrame {
         btnAttendance.setBackground(new java.awt.Color(52, 73, 94));
         btnAttendance.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btnAttendance.setForeground(new java.awt.Color(255, 255, 255));
-        btnAttendance.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/pengguna.png"))); // NOI18N
+        btnAttendance.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/attendance.png"))); // NOI18N
         btnAttendance.setText("ATTENDANCE");
         btnAttendance.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         btnAttendance.addActionListener(new java.awt.event.ActionListener() {
@@ -184,7 +197,7 @@ public class AdminPage extends javax.swing.JFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addComponent(pIcon, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(32, 32, 32)
+                .addGap(37, 37, 37)
                 .addComponent(btnDashboard, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(btnSiswa, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -224,7 +237,7 @@ public class AdminPage extends javax.swing.JFrame {
                 .addGroup(pHeaderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jDaftar)
                     .addComponent(jSmart))
-                .addContainerGap(839, Short.MAX_VALUE))
+                .addContainerGap(835, Short.MAX_VALUE))
         );
         pHeaderLayout.setVerticalGroup(
             pHeaderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -284,14 +297,15 @@ public class AdminPage extends javax.swing.JFrame {
 
             jDaftar.setText("DATA PENGGUNA");
     }//GEN-LAST:event_btnPenggunaActionPerformed
-            
+
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) {
-
-        java.awt.EventQueue.invokeLater(() -> new AdminPage().setVisible(true));
-    }
+    public static void main(String[] args) {
+    java.awt.EventQueue.invokeLater(() -> {
+        new AdminPage().setVisible(true);
+    });
+}
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAttendance;
@@ -311,4 +325,3 @@ public class AdminPage extends javax.swing.JFrame {
     private javax.swing.JLabel txtSchool;
     // End of variables declaration//GEN-END:variables
 }
-

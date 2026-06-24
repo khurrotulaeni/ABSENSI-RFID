@@ -22,11 +22,6 @@ public class SiswaService {
         siswaRepo.save(siswaBaru);
     }
 
-    public void tambahSiswa(String idSiswa, String uidRfid, String namaLengkap, String jurusanSiswa, String kelasSiswa) {
-        Siswa siswaBaru = new Siswa(idSiswa, uidRfid, namaLengkap, jurusanSiswa, kelasSiswa);
-        siswaRepo.save(siswaBaru);
-    }
-
     // READ ALL
     public List<Siswa> getAllSiswa() {
         return siswaRepo.findAll();
@@ -75,5 +70,4 @@ public class SiswaService {
 
     public boolean cekRfidAda(String uidRfid) {
         return cariSiswaByRFID(uidRfid) != null;
-    }
-}
+    }}

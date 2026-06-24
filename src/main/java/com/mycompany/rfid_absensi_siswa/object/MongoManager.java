@@ -11,6 +11,7 @@ import org.bson.codecs.pojo.PojoCodecProvider;
 public class MongoManager {
 
     private static MongoClient mongoClient;
+
     private static final String DATABASE_NAME = "Absensi";
 
     // GLOBAL POJO REGISTRY
@@ -21,8 +22,9 @@ public class MongoManager {
                             PojoCodecProvider.builder()
                                     .automatic(true)
                                     .build()
-                            )
-            );
+                    )
+                    
+                    );
 
     public static MongoDatabase getDatabase() {
 
@@ -32,6 +34,7 @@ public class MongoManager {
                     "mongodb://localhost:27017"
             );
         }
+
         // SELALU return dengan codec registry
         return mongoClient
                 .getDatabase(DATABASE_NAME)

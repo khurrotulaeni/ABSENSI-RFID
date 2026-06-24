@@ -4,16 +4,20 @@
  */
 package absensiRFID.GUI;
 
+import com.mycompany.rfid_absensi_siswa.object.Admin;
+import com.mycompany.rfid_absensi_siswa.object.AdminService;
 import java.awt.Color;
 import javax.swing.JOptionPane;
+
 /**
  *
  * @author organizer
  */
 public class LoginPage extends javax.swing.JFrame {
-    
+
     private boolean showPassword = false;
-    
+    private final AdminService adminService = new AdminService();
+
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(LoginPage.class.getName());
 
     /**
@@ -21,8 +25,8 @@ public class LoginPage extends javax.swing.JFrame {
      */
     public LoginPage() {
         initComponents();
-        
-        txtPassword.setEchoChar((char)0);
+
+        txtPassword.setEchoChar((char) 0);
     }
 
     /**
@@ -131,55 +135,69 @@ public class LoginPage extends javax.swing.JFrame {
     }//GEN-LAST:event_txtEmailActionPerformed
 
     private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginActionPerformed
-     // 1. Ambil input dari user
-    String emailUser = txtEmail.getText().trim();
-    String passUser = String.valueOf(txtPassword.getPassword()).trim();
+        // 1. Ambil input dari user
+        String username = txtEmail.getText().trim();
+        String password = String.valueOf(txtPassword.getPassword()).trim();
 
-    // Validasi sederhana agar tidak kosong
-    if (emailUser.isEmpty() || passUser.isEmpty()) {
-        JOptionPane.showMessageDialog(this, "Email dan Password tidak boleh kosong!", "Peringatan", JOptionPane.WARNING_MESSAGE);
-        return;
-    }
+        // VALIDASI
+        if (username.isEmpty()
+                || password.isEmpty()
+                || username.equals("Masukan Email")
+                || password.equals("Masukan Password")) {
 
-    try {
-        // 2. Koneksi ke MongoDB (Sesuaikan alamatnya jika bukan localhost)
-        String uri = "mongodb://localhost:27017";
-        try (com.mongodb.client.MongoClient mongoClient = com.mongodb.client.MongoClients.create(uri)) {
-            
-            // Pilih Database dan Collection (Ganti nama_db dengan nama database kamu di Compass)
-            com.mongodb.client.MongoDatabase database = mongoClient.getDatabase("Absensi");
-            com.mongodb.client.MongoCollection<org.bson.Document> collection = database.getCollection("admin");
-
-            // 3. Cari user yang email DAN password-nya cocok
-            // Ingat: MongoDB itu case-sensitive (huruf besar/kecil berpengaruh)
-            org.bson.Document query = new org.bson.Document("email", emailUser)
-                                              .append("password", passUser);
-            
-            org.bson.Document userTerdaftar = collection.find(query).first();
-
-            // 4. Cek Hasilnya
-            if (userTerdaftar != null) {
-                JOptionPane.showMessageDialog(null, "Login Berhasil! Selamat Datang.");
-                
-                // Pindah ke halaman Dashboard
-                new AdminPage().setVisible(true); 
-                this.dispose(); // Tutup halaman login
-            } else {
-                JOptionPane.showMessageDialog(null, "Email atau Password Salah!", "Gagal Login", JOptionPane.ERROR_MESSAGE);
-            }
+            JOptionPane.showMessageDialog(
+                    this,
+                    "Username dan Password wajib diisi!",
+                    "Peringatan",
+                    JOptionPane.WARNING_MESSAGE
+            );
+            return;
         }
-    } catch (Exception e) {
-        JOptionPane.showMessageDialog(this, "Koneksi ke MongoDB Gagal: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-    }   // TODO add your handling code here:
+
+        try {
+
+            Admin admin = adminService.login(username, password);
+
+            if (admin != null) {
+
+                JOptionPane.showMessageDialog(
+                        this,
+                        "Login berhasil!\nSelamat datang "
+                        + admin.getNamaLengkap()
+                );
+
+                new AdminPage().setVisible(true);
+
+                this.dispose();
+
+            } else {
+
+                JOptionPane.showMessageDialog(
+                        this,
+                        "Username atau Password salah!",
+                        "Login Gagal",
+                        JOptionPane.ERROR_MESSAGE
+                );
+            }
+
+        } catch (Exception e) {
+
+            JOptionPane.showMessageDialog(
+                    this,
+                    "Error: " + e.getMessage(),
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE
+            );
+        } // TODO add your handling code here:
     }//GEN-LAST:event_btnLoginActionPerformed
 
     private void txtPasswordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtPasswordActionPerformed
-  
+
     }//GEN-LAST:event_txtPasswordActionPerformed
 
     private void txtEmailMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtEmailMouseClicked
-       
-       if(txtEmail.getText().trim().equals("Masukan Email")){
+
+        if (txtEmail.getText().trim().equals("Masukan Email")) {
 
             txtEmail.setText("");
             txtEmail.setForeground(Color.BLACK);
@@ -187,39 +205,39 @@ public class LoginPage extends javax.swing.JFrame {
     }//GEN-LAST:event_txtEmailMouseClicked
 
     private void txtPasswordMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtPasswordMouseClicked
-      
+
         String pass = String.valueOf(txtPassword.getPassword());
 
-        if(pass.trim().equals("Masukan Password")){
+        if (pass.trim().equals("Masukan Password")) {
 
-        txtPassword.setText("");
-        txtPassword.setForeground(Color.BLACK);
+            txtPassword.setText("");
+            txtPassword.setForeground(Color.BLACK);
 
-        txtPassword.setEchoChar('*');
+            txtPassword.setEchoChar('*');
         }
     }//GEN-LAST:event_txtPasswordMouseClicked
 
     private void lblEyeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblEyeMouseClicked
-        
-        if(showPassword == false){
 
-            txtPassword.setEchoChar((char)0);
-            
+        if (showPassword == false) {
+
+            txtPassword.setEchoChar((char) 0);
+
             lblEye.setIcon(new javax.swing.ImageIcon(
-            getClass().getResource("/img/hidden.png")
-        ));
+                    getClass().getResource("/img/hidden.png")
+            ));
 
-    showPassword = true;
+            showPassword = true;
 
-    }   else {
+        } else {
 
             txtPassword.setEchoChar('*');
 
             lblEye.setIcon(new javax.swing.ImageIcon(
-                getClass().getResource("/img/eye.png")
+                    getClass().getResource("/img/eye.png")
             ));
 
-    showPassword = false;
+            showPassword = false;
         }
     }//GEN-LAST:event_lblEyeMouseClicked
 
@@ -247,7 +265,6 @@ public class LoginPage extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(() -> new LoginPage().setVisible(true));
     }
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel bgLogin;
     private javax.swing.JButton btnLogin;
