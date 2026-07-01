@@ -5,7 +5,7 @@
 package absensiRFID.DAO;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.model.Filters;
-import com.mycompany.rfid_absensi_siswa.object.MongoManager;
+import absensiRFID.util.MongoManager;
 import org.bson.conversions.Bson;
 import java.util.ArrayList;
 import java.util.List;

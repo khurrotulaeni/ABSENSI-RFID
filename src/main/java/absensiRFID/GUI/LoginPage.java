@@ -5,7 +5,7 @@
 package absensiRFID.GUI;
 
 import com.mycompany.rfid_absensi_siswa.object.Admin;
-import com.mycompany.rfid_absensi_siswa.object.AdminService;
+import absensiRFID.services.AdminService;
 import java.awt.Color;
 import javax.swing.JOptionPane;
 
@@ -17,7 +17,7 @@ public class LoginPage extends javax.swing.JFrame {
 
     private boolean showPassword = false;
     private final AdminService adminService = new AdminService();
-
+    
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(LoginPage.class.getName());
 
     /**
@@ -157,6 +157,8 @@ public class LoginPage extends javax.swing.JFrame {
         try {
 
             Admin admin = adminService.login(username, password);
+            
+            System.out.println(admin);
 
             if (admin != null) {
 

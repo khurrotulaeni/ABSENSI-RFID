@@ -4,14 +4,16 @@
  */
 package absensiRFID.GUI;
 
+import absensiRFID.serial.SerialPortManager;
 import absensiRFID.services.DigitalClockService;
 import javax.swing.JLabel;
+
 /**
  *
  * @author organizer
  */
 public class AttendancePage extends javax.swing.JFrame {
-    
+
     // Referensi thread disimpan untuk ditrack jika dibutuhkan (misal: untuk stop/cek status)
     private Thread clockThread;
 
@@ -20,8 +22,12 @@ public class AttendancePage extends javax.swing.JFrame {
      */
     public AttendancePage() {
         initComponents();
-        
+
+        registerHandler();
+
         initClock(lblJam);
+
+        serialManager.connect("COM3"); // ganti sesuai port RFID
     }
 
     /**
@@ -46,7 +52,6 @@ public class AttendancePage extends javax.swing.JFrame {
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
-        rFIDIconPanel1 = new absensiRFID.palette.RFIDIconPanel();
         jPanel6 = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -142,17 +147,6 @@ public class AttendancePage extends javax.swing.JFrame {
                 .addContainerGap(17, Short.MAX_VALUE))
         );
 
-        javax.swing.GroupLayout rFIDIconPanel1Layout = new javax.swing.GroupLayout(rFIDIconPanel1);
-        rFIDIconPanel1.setLayout(rFIDIconPanel1Layout);
-        rFIDIconPanel1Layout.setHorizontalGroup(
-            rFIDIconPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 60, Short.MAX_VALUE)
-        );
-        rFIDIconPanel1Layout.setVerticalGroup(
-            rFIDIconPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 40, Short.MAX_VALUE)
-        );
-
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
@@ -165,8 +159,6 @@ public class AttendancePage extends javax.swing.JFrame {
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(rFIDIconPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 235, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addGap(0, 133, Short.MAX_VALUE)
@@ -179,10 +171,8 @@ public class AttendancePage extends javax.swing.JFrame {
                 .addGap(22, 22, 22)
                 .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(57, 57, 57)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(rFIDIconPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
+                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 20, Short.MAX_VALUE)
                 .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(28, 28, 28))
         );
@@ -232,6 +222,11 @@ public class AttendancePage extends javax.swing.JFrame {
             new AttendancePage().setVisible(true);
         });
     }
+    private SerialPortManager serialManager = new SerialPortManager();
+
+    private SiswaDAO siswaDAO = new SiswaDAO();
+
+    private AttendanceDAO attendanceDAO = new AttendanceDAO();
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
@@ -248,25 +243,38 @@ public class AttendancePage extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel6;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JLabel lblJam;
-    private absensiRFID.palette.RFIDIconPanel rFIDIconPanel1;
     // End of variables declaration//GEN-END:variables
 
     private void initClock(JLabel lblJam) {
         DigitalClockService service = new DigitalClockService(lblJam, "EEEE, d MMMM yyyy, HH:mm:ss");
-        
+
         // 1. Ambil objek thread dari service
         clockThread = service.getThread();
-        
+
         // 2. Beri nama secara mandiri untuk debugging/tracking
         clockThread.setName("Thread-Jam-Kiosk");
-        
+
         // 3. Atur daemon secara mandiri sebelum start [Conversation History]
         clockThread.setDaemon(true);
-        
+
         // 4. Jalankan thread (Fase New -> Runnable) [3]
         clockThread.start();
-        
+
         System.out.println("Memulai: " + clockThread.getName() + " (Daemon: " + clockThread.isDaemon() + ")");
     }
-}
 
+    private void registerHandler() {
+        registerSerialHandler();
+    }
+
+    private void registerSerialHandler() {
+        serialManager.setDataHandler(uid -> {
+
+            System.out.println("UID : " + uid);
+
+            // nanti di sini cari siswa
+            // Siswa siswa = siswaDAO.findByUid(uid);
+            // lalu simpan attendance
+        });
+    }
+}
