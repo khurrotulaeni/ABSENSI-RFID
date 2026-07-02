@@ -6,6 +6,8 @@ package absensiRFID.GUI;
 
 import absensiRFID.serial.SerialPortManager;
 import absensiRFID.services.DigitalClockService;
+import com.mycompany.rfid_absensi_siswa.object.LogAbsen;
+import absensiRFID.DAO.GenericDAO;
 import javax.swing.JLabel;
 
 /**
@@ -27,7 +29,7 @@ public class AttendancePage extends javax.swing.JFrame {
 
         initClock(lblJam);
 
-        serialManager.connect("COM3"); // ganti sesuai port RFID
+//        serialManager.connect("COM3"); // ganti sesuai port RFID
     }
 
     /**
@@ -222,12 +224,9 @@ public class AttendancePage extends javax.swing.JFrame {
             new AttendancePage().setVisible(true);
         });
     }
-    private SerialPortManager serialManager = new SerialPortManager();
+    private final SerialPortManager serialManager = new SerialPortManager();
 
-    private SiswaDAO siswaDAO = new SiswaDAO();
-
-    private AttendanceDAO attendanceDAO = new AttendanceDAO();
-
+    private GenericDAO<LogAbsen> attendanceDAO = new GenericDAO<>("Log_absensi", LogAbsen.class);
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -272,9 +271,6 @@ public class AttendancePage extends javax.swing.JFrame {
 
             System.out.println("UID : " + uid);
 
-            // nanti di sini cari siswa
-            // Siswa siswa = siswaDAO.findByUid(uid);
-            // lalu simpan attendance
         });
     }
 }
