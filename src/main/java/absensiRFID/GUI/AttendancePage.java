@@ -14,7 +14,7 @@ public class AttendancePage extends javax.swing.JFrame {
     
     // Referensi thread disimpan untuk ditrack jika dibutuhkan (misal: untuk stop/cek status)
     private Thread clockThread;
-
+    
     /**
      * Creates new form AttendancePage
      */
@@ -92,6 +92,12 @@ public class AttendancePage extends javax.swing.JFrame {
 
         jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel2.setText("Silakan Tap Kartu Anda");
+
+        jTextField1.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                jTextField1KeyReleased(evt);
+            }
+        });
 
         jPanel5.setBackground(new java.awt.Color(153, 153, 153));
 
@@ -223,6 +229,10 @@ public class AttendancePage extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jTextField1KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField1KeyReleased
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextField1KeyReleased
 
     /**
      * @param args the command line arguments

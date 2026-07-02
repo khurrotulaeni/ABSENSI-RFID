@@ -7,12 +7,12 @@ import absensiRFID.panel.SiswaPanel;
 import absensiRFID.panel.PenggunaPanel;
 import absensiRFID.panel.DashboardPanel;
 
-
 import com.mycompany.rfid_absensi_siswa.object.Siswa;
 import com.mycompany.rfid_absensi_siswa.object.SiswaService;
 import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import absensiRFID.GUI.AttendancePage;
 
 /**
  *
@@ -282,7 +282,8 @@ public class AdminPage extends javax.swing.JFrame {
     }//GEN-LAST:event_btnLogoutActionPerformed
 
     private void btnAttendanceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAttendanceActionPerformed
-        // TODO add your handling code here:
+        new AttendancePage().setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_btnAttendanceActionPerformed
 
     private void btnLaporActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLaporActionPerformed
