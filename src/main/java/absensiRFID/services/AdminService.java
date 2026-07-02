@@ -1,4 +1,4 @@
-package com.mycompany.rfid_absensi_siswa.object;
+package absensiRFID.services;
 
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
@@ -9,10 +9,11 @@ package com.mycompany.rfid_absensi_siswa.object;
  *
  * @author ASUS
  */
+
 import absensiRFID.DAO.GenericDAO;
 import com.mongodb.client.model.Filters;
+import com.mycompany.rfid_absensi_siswa.object.Admin;
 import org.bson.conversions.Bson;
-import absensiRFID.util.EncryptionUtils;
 
 public class AdminService {
 
@@ -24,22 +25,15 @@ public class AdminService {
 
     // REGISTER ADMIN
     public void tambahAdmin(Admin adminBaru) {
-        
-        adminBaru.setPassword(
-            EncryptionUtils.encrypt(adminBaru.getPassword())
-        );
         adminRepo.save(adminBaru);
     }
 
     // LOGIN
     public Admin login(String username, String password) {
-        
-        String encryptedPassword =
-            EncryptionUtils.encrypt(password);
-        
+
         Bson filter = Filters.and(
                 Filters.eq("email", username),
-                Filters.eq("password", encryptedPassword)
+                Filters.eq("password", password)
         );
 
         return adminRepo.findOne(filter);

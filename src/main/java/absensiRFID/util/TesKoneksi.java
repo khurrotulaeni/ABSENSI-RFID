@@ -2,8 +2,9 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package com.mycompany.rfid_absensi_siswa.object;
+package absensiRFID.util;
 
+import absensiRFID.util.MongoManager;
 import com.mongodb.client.MongoDatabase;
 import org.bson.Document;
 

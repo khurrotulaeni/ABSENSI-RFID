@@ -3,10 +3,11 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package absensiRFID.GUI;
+
 import absensiRFID.panel.SiswaPanel;
 import absensiRFID.panel.PenggunaPanel;
 import absensiRFID.panel.DashboardPanel;
-
+import absensiRFID.GUI.AttendancePage;
 
 import com.mycompany.rfid_absensi_siswa.object.Siswa;
 import com.mycompany.rfid_absensi_siswa.object.SiswaService;
@@ -18,11 +19,9 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author organizer
  */
-
 public class AdminPage extends javax.swing.JFrame {
-    
-    // Ganti 'Siswa' dengan nama class model kamu jika beda 
 
+    // Ganti 'Siswa' dengan nama class model kamu jika beda 
     private final SiswaService siswaService = new SiswaService();
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(AdminPage.class.getName());
 
@@ -34,7 +33,7 @@ public class AdminPage extends javax.swing.JFrame {
 
         pContent.setLayout(new java.awt.BorderLayout());
 
-    // tampil dashboard pertama kali
+        // tampil dashboard pertama kali
         pContent.removeAll();
         pContent.add(new DashboardPanel(), java.awt.BorderLayout.CENTER);
         pContent.revalidate();
@@ -282,7 +281,8 @@ public class AdminPage extends javax.swing.JFrame {
     }//GEN-LAST:event_btnLogoutActionPerformed
 
     private void btnAttendanceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAttendanceActionPerformed
-        // TODO add your handling code here:
+        AttendancePage page = new AttendancePage();
+        page.setVisible(true);
     }//GEN-LAST:event_btnAttendanceActionPerformed
 
     private void btnLaporActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLaporActionPerformed
@@ -290,22 +290,22 @@ public class AdminPage extends javax.swing.JFrame {
     }//GEN-LAST:event_btnLaporActionPerformed
 
     private void btnPenggunaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPenggunaActionPerformed
-            pContent.removeAll();
-            pContent.add(new PenggunaPanel(), java.awt.BorderLayout.CENTER);
-            pContent.revalidate();
-            pContent.repaint();
+        pContent.removeAll();
+        pContent.add(new PenggunaPanel(), java.awt.BorderLayout.CENTER);
+        pContent.revalidate();
+        pContent.repaint();
 
-            jDaftar.setText("DATA PENGGUNA");
+        jDaftar.setText("DATA PENGGUNA");
     }//GEN-LAST:event_btnPenggunaActionPerformed
 
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-    java.awt.EventQueue.invokeLater(() -> {
-        new AdminPage().setVisible(true);
-    });
-}
+        java.awt.EventQueue.invokeLater(() -> {
+            new AdminPage().setVisible(true);
+        });
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAttendance;
