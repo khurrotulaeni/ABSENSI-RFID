@@ -17,7 +17,7 @@ public class LoginPage extends javax.swing.JFrame {
 
     private boolean showPassword = false;
     private final AdminService adminService = new AdminService();
-    
+
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(LoginPage.class.getName());
 
     /**
@@ -139,6 +139,13 @@ public class LoginPage extends javax.swing.JFrame {
         String username = txtEmail.getText().trim();
         String password = String.valueOf(txtPassword.getPassword()).trim();
 
+        // =============== KODE DEBUGGING BARU ===============
+        System.out.println("=================== DEBUG LOGIN ===================");
+        System.out.println("Email dari GUI    : '" + username + "'");
+        System.out.println("Password dari GUI : '" + password + "'");
+        System.out.println("===================================================");
+        // ====================================================
+
         // VALIDASI
         if (username.isEmpty()
                 || password.isEmpty()
@@ -155,25 +162,21 @@ public class LoginPage extends javax.swing.JFrame {
         }
 
         try {
-
             Admin admin = adminService.login(username, password);
-            
-            System.out.println(admin);
+
+            // =============== KODE DEBUGGING BARU ===============
+            System.out.println("Hasil Query Admin : " + admin);
+            System.out.println("===================================================");
+            // ====================================================
 
             if (admin != null) {
-
                 JOptionPane.showMessageDialog(
                         this,
-                        "Login berhasil!\nSelamat datang "
-                        + admin.getNamaLengkap()
+                        "Login berhasil!\nSelamat datang " + admin.getNamaLengkap()
                 );
-
                 new AdminPage().setVisible(true);
-
                 this.dispose();
-
             } else {
-
                 JOptionPane.showMessageDialog(
                         this,
                         "Username atau Password salah!",
@@ -183,14 +186,14 @@ public class LoginPage extends javax.swing.JFrame {
             }
 
         } catch (Exception e) {
-
+            e.printStackTrace(); // Mencetak error merah jika ada crash di database
             JOptionPane.showMessageDialog(
                     this,
                     "Error: " + e.getMessage(),
                     "Error",
                     JOptionPane.ERROR_MESSAGE
             );
-        } // TODO add your handling code here:
+        }
     }//GEN-LAST:event_btnLoginActionPerformed
 
     private void txtPasswordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtPasswordActionPerformed
@@ -226,7 +229,7 @@ public class LoginPage extends javax.swing.JFrame {
             txtPassword.setEchoChar((char) 0);
 
             lblEye.setIcon(new javax.swing.ImageIcon(
-                    getClass().getResource("/img/hidden.png")
+                    getClass().getResource("/img/eye.png")
             ));
 
             showPassword = true;
