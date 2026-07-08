@@ -6,6 +6,8 @@ package absensiRFID.GUI;
 
 import absensiRFID.serial.SerialPortManager;
 import absensiRFID.services.DigitalClockService;
+import com.mycompany.rfid_absensi_siswa.object.LogAbsen;
+import absensiRFID.DAO.GenericDAO;
 import javax.swing.JLabel;
 
 /**
@@ -26,8 +28,9 @@ public class AttendancePage extends javax.swing.JFrame {
         registerHandler();
 
         initClock(lblJam);
+        this.setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
-        serialManager.connect("COM3"); // ganti sesuai port RFID
+//        serialManager.connect("COM3"); 
     }
 
     /**
@@ -222,12 +225,9 @@ public class AttendancePage extends javax.swing.JFrame {
             new AttendancePage().setVisible(true);
         });
     }
-    private SerialPortManager serialManager = new SerialPortManager();
+    private final SerialPortManager serialManager = new SerialPortManager();
 
-    private SiswaDAO siswaDAO = new SiswaDAO();
-
-    private AttendanceDAO attendanceDAO = new AttendanceDAO();
-
+    private GenericDAO<LogAbsen> attendanceDAO = new GenericDAO<>("Log_absensi", LogAbsen.class);
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -265,6 +265,24 @@ public class AttendancePage extends javax.swing.JFrame {
 
     private void registerHandler() {
         registerSerialHandler();
+        
+        jTextField1.addActionListener(new java.awt.event.ActionListener() {
+        @Override
+        public void actionPerformed(java.awt.event.ActionEvent evt) {
+            String uidSimulasi = jTextField1.getText().trim();
+            
+            if (!uidSimulasi.isEmpty()) {
+                System.out.println("\n--- SIMULASI TAP KARTU ---");
+                System.out.println("UID Masuk (Simulasi): " + uidSimulasi);
+                
+                // Di sini kita panggil fungsi yang sama dengan yang dilakukan alat RFID
+                prosesAbsensiSiswa(uidSimulasi); 
+                
+                // Kosongkan kembali teks setelah di-enter agar siap menerima simulasi kartu lain
+                jTextField1.setText(""); 
+            }
+        }
+    });
     }
 
     private void registerSerialHandler() {
@@ -272,9 +290,11 @@ public class AttendancePage extends javax.swing.JFrame {
 
             System.out.println("UID : " + uid);
 
-            // nanti di sini cari siswa
-            // Siswa siswa = siswaDAO.findByUid(uid);
-            // lalu simpan attendance
         });
     }
+    private void prosesAbsensiSiswa(String uid) {
+    // Di sinilah nanti tempat Anda mencari data siswa ke MongoDB berdasarkan UID-nya
+    // Contoh: Student siswa = studentRepo.findOne(Filters.eq("uid_kartu", uid));
+    System.out.println("Memproses absensi untuk UID: " + uid);
+}
 }

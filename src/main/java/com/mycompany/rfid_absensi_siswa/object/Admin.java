@@ -1,13 +1,17 @@
 package com.mycompany.rfid_absensi_siswa.object;
 
+import org.bson.types.ObjectId;
+
 public class Admin {
 
-     private String email;
+    private String email;
     private String password;
     private String namaLengkap;
     private String role;
+    private ObjectId id;
 
     public Admin() {
+
     }
 
     public Admin(String email, String password, String namaLengkap, String role) {
@@ -23,6 +27,14 @@ public class Admin {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public ObjectId getId() {
+        return id;
+    }
+
+    public void setId(ObjectId id) {
+        this.id = id;
     }
 
     public String getPassword() {

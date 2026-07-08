@@ -8,11 +8,10 @@ import com.mycompany.rfid_absensi_siswa.object.Admin;
 import absensiRFID.DAO.GenericDAO;
 import absensiRFID.GUI.AdminPage; // Halaman tujuan
 import absensiRFID.GUI.LoginPage;
-import absensiRFID.util.SecurityUtils;
+import absensiRFID.util.EncryptionUtils; // Menggunakan EncryptionUtils AES milikmu
 import com.mongodb.client.model.Filters;
 import java.awt.Frame;
 import javax.swing.JOptionPane;
-import java.time.LocalDateTime;
 
 /**
  *
@@ -20,21 +19,25 @@ import java.time.LocalDateTime;
  */
 public class AuthService {
 
-    // Inisialisasi DAO untuk koleksi "users" [8]
+    // Inisialisasi DAO untuk koleksi "siswa"
     private final GenericDAO<Admin> adminDAO = new GenericDAO<>("siswa", Admin.class);
 
     /**
-     * Melakukan proses login dengan memvalidasi kredensial (Sub-CPMK 4) [5].
+     * Melakukan proses login dengan memvalidasi kredensial (AES Encryption).
      *
      * @param username
      * @param plainPassword
      * @param loginPage
      */
     public void login(String username, String plainPassword, LoginPage loginPage) {
-        // 1. Mengubah password input menjadi hash SHA-256 untuk keamanan [2]
-        String hashedInput = SecurityUtils.getHash(plainPassword, SecurityUtils.SHA_256);
+        // 1. Mengubah password input menjadi format AES sesuai EncryptionUtils
+        String hashedInput = EncryptionUtils.encrypt(plainPassword);
 
-        // 2. Mencari user di database berdasarkan username DAN password hash [7, 9]
+        // Tambahan Debug: Melihat hasil string enkripsi di tab Output NetBeans saat tombol diklik
+        System.out.println("DEBUG LOGIN -> Username dicari: " + username);
+        System.out.println("DEBUG LOGIN -> Hasil Enkripsi Password: " + hashedInput);
+
+        // 2. Mencari user di database berdasarkan username DAN password terenkripsi
         Admin admin = adminDAO.findOne(Filters.and(
                 Filters.eq("username", username),
                 Filters.eq("password", hashedInput)
@@ -42,14 +45,7 @@ public class AuthService {
 
         // 3. Validasi hasil pencarian
         if (admin != null) {
-
-            adminDAO.update(
-                    "username",
-                    username,
-                    admin
-            );
             // Berhasil: Masuk ke Halaman Admin
-            //JOptionPane.showMessageDialog(null, "Selamat Datang, " + user.getFullname());
             AdminPage admPage = new AdminPage();
             admPage.setLocationRelativeTo(null);
             admPage.setVisible(true);
@@ -58,8 +54,8 @@ public class AuthService {
         } else {
             // Gagal: Notifikasi Error
             JOptionPane.showMessageDialog(null,
-                    I18nService.get("ui.login.wrongpwd"),
-                    I18nService.get("ui.login.faillogin"),
+                    "Username atau Password Salah!",
+                    "Login Gagal",
                     JOptionPane.ERROR_MESSAGE);
         }
     }
@@ -74,7 +70,7 @@ public class AuthService {
      */
     public void registerAdmin(String fullname, String username, String plainPassword) {
         // 1. Proses Hashing: Mengamankan password mentah menggunakan SHA-256 [1]
-        String hashedPassword = SecurityUtils.getHash(plainPassword, SecurityUtils.SHA_256);
+        String hashedPassword = EncryptionUtils.encrypt(plainPassword);
 
         // 2. Instansiasi Objek: Membuat objek User baru dengan password yang sudah di-hash
         // lastLogin disetel null karena user baru belum pernah masuk sistem
@@ -82,10 +78,10 @@ public class AuthService {
 
         // 3. Operasi Create: Menyimpan dokumen user ke koleksi MongoDB melalui GenericDAO [3], [4]
         try {
-            adminDAO.save(newAdmin); // Memanggil insertOne melalui GenericDAO [5]
+            adminDAO.save(newAdmin);
+            JOptionPane.showMessageDialog(null, "Admin Berhasil Didaftarkan!");
         } catch (Exception e) {
-            // Standar Debugging: Mengidentifikasi error log secara mandiri [6]
-            //JOptionPane.showMessageDialog(null, "Gagal mendaftarkan user: " + e.getMessage());
+            System.err.println("Gagal mendaftarkan user: " + e.getMessage());
         }
     }
 }

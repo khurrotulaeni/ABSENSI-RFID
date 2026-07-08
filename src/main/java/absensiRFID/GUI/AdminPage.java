@@ -38,7 +38,15 @@ public class AdminPage extends javax.swing.JFrame {
         pContent.add(new DashboardPanel(), java.awt.BorderLayout.CENTER);
         pContent.revalidate();
         pContent.repaint();
+        
+        btnAttendance.addActionListener(new java.awt.event.ActionListener() {
+        @Override
+        public void actionPerformed(java.awt.event.ActionEvent evt) {
+            btnAttendanceActionPerformed(evt);
+        }
+        });
     }
+       
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -257,7 +265,7 @@ public class AdminPage extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
+        
     private void btnSiswaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSiswaActionPerformed
         pContent.removeAll();
         pContent.add(new SiswaPanel(), java.awt.BorderLayout.CENTER);
@@ -283,6 +291,7 @@ public class AdminPage extends javax.swing.JFrame {
     private void btnAttendanceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAttendanceActionPerformed
         AttendancePage page = new AttendancePage();
         page.setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_btnAttendanceActionPerformed
 
     private void btnLaporActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLaporActionPerformed
